@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - FootballConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logofc.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #004080;
+            color: #fff;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+        header img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+        }
+        section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: #004080;
+            margin-bottom: 1rem;
+        }
+        section p {
+            margin-bottom: 1rem;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-item h3 {
+            color: #004080;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        .faq-item p {
+            display: none;
+            margin-left: 1rem;
+        }
+        .cta {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .cta a {
+            display: inline-block;
+            background-color: #004080;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+        .cta a:hover {
+            background-color: #002d59;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const faqItems = document.querySelectorAll(".faq-item h3");
+
+            faqItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const answer = this.nextElementSibling;
+                    answer.style.display = answer.style.display === "block" ? "none" : "block";
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <img src="logofc.png" alt="FootballConnect Logo">
+        <h1>FAQ</h1>
+    </header>
+
+    <section>
+        <h2>Questions Fréquemment Posées</h2>
+
+        <div class="faq-item">
+            <h3>Comment créer un compte sur FootballConnect ?</h3>
+            <p>Pour créer un compte, cliquez sur le bouton "S'inscrire" sur la page d'accueil et suivez les étapes indiquées.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Quels types de clubs peuvent utiliser FootballConnect ?</h3>
+            <p>FootballConnect est conçu pour les clubs amateurs, mais il peut également être adapté à d'autres structures sportives.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Les données des membres sont-elles sécurisées ?</h3>
+            <p>Oui, nous utilisons des protocoles de sécurité avancés pour protéger toutes les données des utilisateurs.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Peut-on gérer plusieurs équipes au sein d'un même club ?</h3>
+            <p>Absolument ! FootballConnect permet de gérer plusieurs équipes avec des plannings et des suivis distincts.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Comment contacter le support technique ?</h3>
+            <p>Vous pouvez contacter le support technique via l'onglet "Aide en ligne" ou en envoyant un e-mail à support@footballconnect.com.</p>
+        </div>
+    </section>
+
+    <div class="cta">
+        <a href="index.html">Retour à l'Accueil</a>
+    </div>
+</body>
+</html>

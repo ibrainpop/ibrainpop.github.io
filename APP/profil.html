@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - FootballConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: #e4002b;
+            background-image: url('texture-trame-noir.webp');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e4002b;
+        }
+        header h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .menu-icon, .profile-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .content {
+            flex-grow: 1;
+            width: 90%;
+            max-width: 600px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .icon-container i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .icon-container span {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .logo-container {
+            grid-column: span 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+            .icon-container i {
+                font-size: 1.5rem;
+            }
+            .icon-container span {
+                font-size: 0.8rem;
+            }
+            .logo-container img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .icon-container {
+                padding: 10px;
+            }
+            .logo-container img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="menu-icon"><i class="fas fa-bars"></i></span>
+        <h1>Bonjour Coach Issam ⚽</h1>
+        <span class="profile-icon"><i class="fas fa-user"></i></span>
+    </header>
+    <div class="content">
+        <div class="icon-container">
+            <i class="fas fa-trophy"></i>
+            <span>Classement</span>
+        </div>
+        <div class="icon-container">
+            <i class="fas fa-users"></i>
+            <span>Statut de l'équipe</span>
+        </div>
+        <div class="icon-container">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Événements</span>
+        </div>
+        <div class="logo-container">
+            <img src="logoFCL.jpg" alt="Logo FootballConnect">
+        </div>
+        <div class="icon-container">
+            <i class="fas fa-gamepad"></i>
+            <span>Modèle de jeu</span>
+        </div>
+        <div class="icon-container">
+            <i class="fas fa-cogs"></i>
+            <span>Gérer l'équipe</span>
+        </div>
+        <div class="icon-container">
+            <i class="fas fa-wrench"></i>
+            <span>Développement</span>
+        </div>
+    </div>
+</body>
+</html>

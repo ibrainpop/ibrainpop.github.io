@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballConnect - La Solution pour les Clubs Amateurs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logofc.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #004080;
+            color: #fff;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        header img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .feature {
+            flex: 1 1 calc(33% - 2rem);
+            margin: 1rem;
+            background: #e8f0fe;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .feature h3 {
+            color: #004080;
+            margin-bottom: 0.5rem;
+        }
+        .cta {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .cta a {
+            display: inline-block;
+            background-color: #004080;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+        .cta a:hover {
+            background-color: #002d59;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #004080;
+            color: #fff;
+        }
+        footer p {
+            margin: 0;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            .feature {
+                flex: 1 1 100%;
+                margin: 1rem 0;
+            }
+        }
+        @media (max-width: 480px) {
+            header img {
+                width: 60px;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .cta a {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="logofc.png" alt="FootballConnect Logo">
+        <h1>FootballConnect</h1>
+        <p>La solution digitale qui simplifie la gestion des clubs de football amateurs</p>
+    </header>
+
+    <!-- Demo Section -->
+    <section>
+        <h2>Découvrez FootballConnect en Action</h2>
+        <div class="cta">
+            <a href="demo.html">Voir la démo</a>
+        </div>
+    </section>
+
+    <!-- Avantages Section -->
+    <section>
+        <h2>Pourquoi choisir FootballConnect ?</h2>
+        <div class="features">
+            <a href="gain-temps.html" class="feature">
+                <h3>Gain de Temps</h3>
+                <p>Automatisez les plannings, la gestion des entraînements et des tâches administratives.</p>
+            </a>
+            <a href="suivi-performances.html" class="feature">
+                <h3>Suivi des Performances</h3>
+                <p>Évaluez les joueurs grâce à des statistiques précises et des rapports détaillés.</p>
+            </a>
+            <a href="communication.html" class="feature">
+                <h3>Communication Simplifiée</h3>
+                <p>Rassemblez dirigeants, coachs et bénévoles sur une seule plateforme.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Fonctionnalités Section -->
+    <section>
+        <h2>Fonctionnalités Clés</h2>
+        <div class="features">
+            <a href="gestion-plannings.html" class="feature">
+                <h3>Gestion des Plannings</h3>
+                <p>Planifiez les entraînements, matchs et événements en toute simplicité.</p>
+            </a>
+            <a href="suivi-cotisations.html" class="feature">
+                <h3>Suivi des Cotisations</h3>
+                <p>Centralisez la gestion des cotisations et des documents importants.</p>
+            </a>
+            <a href="multi-utilisateurs.html" class="feature">
+                <h3>Accès Multi-Utilisateurs</h3>
+                <p>Un accès dédié pour les entraîneurs, dirigeants et bénévoles.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Aide en Ligne Section -->
+    <section>
+        <h2>Aide en Ligne</h2>
+        <div class="features">
+            <a href="faq.html" class="feature">
+                <h3>FAQ</h3>
+                <p>Consultez les réponses aux questions fréquentes pour une prise en main rapide.</p>
+            </a>
+            <a href="support.html" class="feature">
+                <h3>Support Technique</h3>
+                <p>Bénéficiez d'une assistance technique dédiée pour résoudre vos problèmes.</p>
+            </a>
+            <a href="guides.html" class="feature">
+                <h3>Tutoriels et Guides</h3>
+                <p>Apprenez à utiliser FootballConnect grâce à des guides détaillés.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Appel à l'Action -->
+    <div class="cta">
+        <a href="#">Essayez FootballConnect dès aujourd'hui</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 FootballConnect - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
