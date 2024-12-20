@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement - FootballConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: #e4002b;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #d80027;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 1.2rem;
+        }
+        .content {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        thead th {
+            background-color: #d80027;
+            color: #fff;
+            padding: 10px;
+        }
+        tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        tbody td {
+            padding: 10px;
+            color: #fff;
+        }
+        .pos {
+            color: #fff;
+            font-weight: bold;
+        }
+        .pts {
+            font-weight: bold;
+            text-align: right;
+        }
+        .logo {
+            width: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Classement</h1>
+    </header>
+    <div class="content">
+        <table>
+            <thead>
+                <tr>
+                    <th>POS</th>
+                    <th>ÉQUIPE</th>
+                    <th>J</th>
+                    <th>G</th>
+                    <th>N</th>
+                    <th>P</th>
+                    <th>BP</th>
+                    <th>BC</th>
+                    <th>PTS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pos">1</td>
+                    <td>FC Lyon</td>
+                    <td>15</td>
+                    <td>12</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>36</td>
+                    <td>10</td>
+                    <td class="pts">38</td>
+                </tr>
+                <tr>
+                    <td class="pos">2</td>
+                    <td>Olympique Lyonnais</td>
+                    <td>15</td>
+                    <td>11</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>33</td>
+                    <td>12</td>
+                    <td class="pts">36</td>
+                </tr>
+                <tr>
+                    <td class="pos">3</td>
+                    <td>AS Saint-Priest</td>
+                    <td>15</td>
+                    <td>9</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>28</td>
+                    <td>15</td>
+                    <td class="pts">31</td>
+                </tr>
+                <tr>
+                    <td class="pos">4</td>
+                    <td><img src="fc-villefranche-logo.png" class="logo">FC Villefranche</td>
+                    <td>15</td>
+                    <td>8</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>25</td>
+                    <td>14</td>
+                    <td class="pts">29</td>
+                </tr>
+                <tr>
+                    <td class="pos">5</td>
+                    <td>15</td>
+                    <td>7</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>22</td>
+                    <td>16</td>
+                    <td class="pts">26</td>
+                </tr>
+                <tr>
+                    <td class="pos">6</td>
+                    <td>15</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>3</td>
+                    <td>20</td>
+                    <td>18</td>
+                    <td class="pts">24</td>
+                </tr>
+                <tr>
+                    <td class="pos">7</td>
+                    <td>15</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>3</td>
+                    <td>19</td>
+                    <td>17</td>
+                    <td class="pts">22</td>
+                </tr>
+                <tr>
+                    <td class="pos">8</td>
+                    <td>15</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>17</td>
+                    <td>20</td>
+                    <td class="pts">18</td>
+                </tr>
+                <tr>
+                    <td class="pos">9</td>
+                    <td>15</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>15</td>
+                    <td>24</td>
+                    <td class="pts">14</td>
+                </tr>
+                <tr>
+                    <td class="pos">10</td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>10</td>
+                    <td>12</td>
+                    <td>31</td>
+                    <td class="pts">9</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
