@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programme Quadriceps post LCA</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; background:#0f172a; color:#e5e7eb; }
+    header { padding: 16px 20px; background:#020617; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.6); }
+    h1 { font-size: 1.2rem; margin:0; }
+    .sub { font-size:0.8rem; color:#9ca3af; }
+    main { padding: 12px; max-width:900px; margin:0 auto 40px; }
+    .ex { background:#020617; border-radius:12px; padding:12px 14px; margin-bottom:12px; box-shadow:0 10px 25px rgba(15,23,42,0.9); border:1px solid #1f2937; }
+    .ex-header { display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:pointer; }
+    .ex-title { font-size:0.95rem; font-weight:600; }
+    .tag { font-size:0.7rem; padding:2px 6px; border-radius:999px; background:#1f2937; color:#a5b4fc; }
+    .ex-body { margin-top:8px; display:none; }
+    .ex.open .ex-body { display:block; }
+    .btn-row { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
+    .btn { flex:1 1 120px; text-align:center; padding:8px 10px; border-radius:999px; font-size:0.8rem; text-decoration:none; border:1px solid #4b5563; color:#e5e7eb; background:#111827; }
+    .btn.alt { border-style:dashed; color:#22c55e; }
+    .btn:hover { background:#1f2937; }
+    iframe { width:100%; border-radius:10px; border:none; aspect-ratio:16/9; margin-top:4px; }
+    .note { font-size:0.7rem; color:#9ca3af; margin-top:6px; }
+    .warning { background:#7f1d1d; border-radius:10px; padding:8px 10px; font-size:0.75rem; margin-bottom:12px; border:1px solid #f97373; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Programme Quadriceps – post LCA</h1>
+  <div class="sub">Issam · Utilise avec les consignes de ton kiné / chirurgien</div>
+</header>
+<main>
+  <section class="warning">
+    Cette page est un mémo pratique pour la salle. Elle ne remplace pas l’avis de ton kiné / chirurgien.
+    Si un exercice provoque une douleur vive au genou, arrête-le immédiatement.
+  </section>
+
+  <div id="ex-list"></div>
+</main>
+<script>
+const exercises = [
+  {
+    name: '1. Presse à cuisses (1 jambe)',
+    goal: 'Renforcer quadriceps et fessiers, travail unilatéral.',
+    machineUrl: 'https://www.youtube.com/watch?v=t0CEDjh7Ufw',
+    machineLabel: 'Tuto presse à cuisses (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=5M18SvFnii0',
+    altLabel: 'Squats sans machine pour quadriceps (FR)',
+    note: 'Réalise la série une jambe à la fois, en contrôlant bien la descente.'
+  },
+  {
+    name: '2. Squat guidé (Smith machine)',
+    goal: 'Travail global cuisses / fessiers, trajectoire sécurisée.',
+    machineUrl: 'https://www.youtube.com/watch?v=s1FpL1kb3Wk',
+    machineLabel: 'Squat à la Smith machine (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=_mV64bZHJxc',
+    altLabel: 'Tutoriel squat barre libre (EN – visuel)',
+    note: 'Garde le genou dans l’axe du pied, amplitude validée par ton kiné.'
+  },
+  {
+    name: '3. Fentes / fentes bulgares',
+    goal: 'Renforcer quadriceps et fessiers, travail d’équilibre.',
+    machineUrl: 'https://www.youtube.com/watch?v=ACKECyABSSs',
+    machineLabel: 'Fente bulgare avec haltères (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=FKViwVfUsQk',
+    altLabel: 'Fente bulgare au poids du corps (FR)',
+    note: 'Commence sans charge si besoin, en te tenant à un support.'
+  },
+  {
+    name: '4. Presse excentrique (1 jambe en descente)',
+    goal: 'Accent sur le contrôle excentrique de la jambe opérée.',
+    machineUrl: 'https://www.youtube.com/watch?v=EjpzJlc-oTE',
+    machineLabel: 'Presse à cuisses – exécution contrôlée (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=2HIgg3MG29k',
+    altLabel: 'Squat à la Smith machine – contrôle descente (EN – visuel)',
+    note: 'Monte avec les deux jambes, descends lentement avec la jambe opérée.'
+  },
+  {
+    name: '5. Step-down',
+    goal: 'Contrôle de la flexion de genou et stabilité.',
+    machineUrl: 'https://www.youtube.com/watch?v=JHJrl-Lio4U',
+    machineLabel: 'Step down pour la flexion du genou (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=rXrg2j12NJI',
+    altLabel: 'Incline lateral step down (FR)',
+    note: 'Pense à aligner le genou avec le 2e orteil, descente lente.'
+  },
+  {
+    name: '6. Leg extension',
+    goal: 'Isolation quadriceps, à charges validées par le kiné.',
+    machineUrl: 'https://www.youtube.com/watch?v=42',
+    machineLabel: 'Leg extension machine – Decathlon (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=47',
+    altLabel: 'Exercices genou sans machine (FR)',
+    note: 'Respecte l’amplitude maximale autorisée, pas de douleur à l’avant du genou.'
+  },
+  {
+    name: '7. Leg curl',
+    goal: 'Renforcer les ischios (arrière cuisse).',
+    machineUrl: 'https://www.youtube.com/watch?v=40',
+    machineLabel: 'Leg curl allongé machine (FR)',
+    altUrl: 'https://www.youtube.com/watch?v=bXCDTFApU3c',
+    altLabel: 'Leg curl allongé avec élastique (FR)',
+    note: 'Contrôle la montée, ne creuse pas le bas du dos.'
+  }
+];
+
+const list = document.getElementById('ex-list');
+
+exercises.forEach((ex, idx) => {
+  const card = document.createElement('article');
+  card.className = 'ex';
+  if (idx === 0) card.classList.add('open');
+
+  card.innerHTML = `
+    <div class="ex-header">
+      <div>
+        <div class="ex-title">${ex.name}</div>
+        <div style="font-size:0.75rem;color:#9ca3af;">${ex.goal}</div>
+      </div>
+      <div class="tag">tap pour ouvrir</div>
+    </div>
+    <div class="ex-body">
+      <div class="btn-row">
+        <a class="btn" href="${ex.machineUrl}" target="_blank" rel="noopener noreferrer">${ex.machineLabel}</a>
+        <a class="btn alt" href="${ex.altUrl}" target="_blank" rel="noopener noreferrer">Alternative / sans machine</a>
+      </div>
+      <iframe loading="lazy" src="${ex.machineUrl.replace('watch?v=','embed/')}"></iframe>
+      <p class="note">${ex.note}</p>
+    </div>
+  `;
+
+  card.querySelector('.ex-header').addEventListener('click', () => {
+    card.classList.toggle('open');
+  });
+
+  list.appendChild(card);
+});
+</script>
+</body>
+</html>
