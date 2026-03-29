@@ -1,141 +1,465 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Programme Quadriceps post LCA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Programme LCA – Issam</title>
   <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; background:#0f172a; color:#e5e7eb; }
-    header { padding: 16px 20px; background:#020617; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.6); }
-    h1 { font-size: 1.2rem; margin:0; }
-    .sub { font-size:0.8rem; color:#9ca3af; }
-    main { padding: 12px; max-width:900px; margin:0 auto 40px; }
-    .ex { background:#020617; border-radius:12px; padding:12px 14px; margin-bottom:12px; box-shadow:0 10px 25px rgba(15,23,42,0.9); border:1px solid #1f2937; }
-    .ex-header { display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:pointer; }
-    .ex-title { font-size:0.95rem; font-weight:600; }
-    .tag { font-size:0.7rem; padding:2px 6px; border-radius:999px; background:#1f2937; color:#a5b4fc; }
-    .ex-body { margin-top:8px; display:none; }
-    .ex.open .ex-body { display:block; }
-    .btn-row { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
-    .btn { flex:1 1 120px; text-align:center; padding:8px 10px; border-radius:999px; font-size:0.8rem; text-decoration:none; border:1px solid #4b5563; color:#e5e7eb; background:#111827; }
-    .btn.alt { border-style:dashed; color:#22c55e; }
-    .btn:hover { background:#1f2937; }
-    iframe { width:100%; border-radius:10px; border:none; aspect-ratio:16/9; margin-top:4px; }
-    .note { font-size:0.7rem; color:#9ca3af; margin-top:6px; }
-    .warning { background:#7f1d1d; border-radius:10px; padding:8px 10px; font-size:0.75rem; margin-bottom:12px; border:1px solid #f97373; }
+    :root {
+      --bg:        #080c14;
+      --surface:   #0f172a;
+      --card:      #111827;
+      --border:    #1e2d45;
+      --accent:    #3b82f6;
+      --green:     #22c55e;
+      --orange:    #f59e0b;
+      --red:       #ef4444;
+      --text:      #f1f5f9;
+      --muted:     #64748b;
+      --radius:    14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; }
+
+    /* ─── HEADER ─── */
+    .app-header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px 0;
+    }
+    .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .header-title { font-size: 1rem; font-weight: 700; }
+    .header-sub   { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+    .progress-wrap { margin-bottom: 0; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-bottom: 5px; }
+    .progress-bar { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.5s ease; }
+    .tab-row { display: flex; gap: 6px; padding: 10px 0 0; overflow-x: auto; scrollbar-width: none; }
+    .tab-row::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 6px 14px; border-radius: 99px; font-size: 0.72rem; font-weight: 600;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      cursor: pointer; white-space: nowrap; transition: all .2s;
+    }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .tab-btn.done   { background: #14532d; color: var(--green); border-color: #166534; }
+
+    /* ─── REST TIMER ─── */
+    #rest-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(8,12,20,0.95); flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+    }
+    #rest-overlay.show { display: flex; }
+    .rest-ring { position: relative; width: 160px; height: 160px; }
+    .rest-ring svg { transform: rotate(-90deg); }
+    .rest-ring circle { fill: none; stroke-width: 10; }
+    .rest-bg { stroke: var(--border); }
+    .rest-arc { stroke: var(--accent); stroke-dasharray: 440; stroke-dashoffset: 0; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+    .rest-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 800; color: var(--text); }
+    .rest-label { font-size: 0.85rem; color: var(--muted); }
+    #btn-skip-rest { padding: 10px 28px; border-radius: 99px; background: var(--border); color: var(--text); font-size: 0.85rem; border: none; cursor: pointer; }
+
+    /* ─── MAIN ─── */
+    main { padding: 14px 14px 100px; max-width: 680px; margin: 0 auto; }
+
+    /* ─── EXERCISE CARD ─── */
+    .ex-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: 12px;
+      overflow: hidden; transition: border-color .25s;
+    }
+    .ex-card.done-card { border-color: #166534; opacity: .6; }
+    .ex-card.active-card { border-color: var(--accent); }
+
+    .ex-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 14px 12px; cursor: pointer;
+    }
+    .ex-num {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--accent); flex-shrink: 0;
+    }
+    .ex-num.done { background: #14532d; color: var(--green); }
+    .ex-info { flex: 1; min-width: 0; }
+    .ex-name { font-size: 0.9rem; font-weight: 700; }
+    .ex-sets { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .ex-chevron { color: var(--muted); font-size: 1rem; transition: transform .25s; flex-shrink: 0; }
+    .ex-card.open .ex-chevron { transform: rotate(180deg); }
+
+    /* body */
+    .ex-body { display: none; padding: 0 14px 14px; }
+    .ex-card.open .ex-body { display: block; }
+
+    /* video tabs */
+    .vtab-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .vtab {
+      flex: 1; padding: 8px 10px; text-align: center; border-radius: 10px;
+      font-size: 0.78rem; font-weight: 600; cursor: pointer;
+      border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+      transition: all .2s;
+    }
+    .vtab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .vtab.alt-tab.active { background: #854d0e; color: #fef3c7; border-color: var(--orange); }
+
+    .video-wrap { border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 10px; }
+    .video-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    .coaching-note { font-size: 0.75rem; color: var(--muted); line-height: 1.5; padding: 8px 10px; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 12px; }
+
+    /* series tracker */
+    .series-section { margin-bottom: 4px; }
+    .series-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
+    .series-dots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .serie-dot {
+      width: 42px; height: 42px; border-radius: 10px; background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; color: var(--muted); cursor: pointer;
+      border: 1.5px solid var(--border); transition: all .2s; font-weight: 600;
+    }
+    .serie-dot.done { background: #14532d; color: var(--green); border-color: #166534; }
+
+    .btn-serie {
+      width: 100%; padding: 11px; background: var(--accent); color: #fff;
+      border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .btn-serie:hover { opacity: 0.88; }
+    .btn-serie:disabled { background: var(--border); color: var(--muted); cursor: default; }
+
+    /* ─── FLOATING DONE BUTTON ─── */
+    #btn-done-all {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      padding: 14px 36px; background: var(--green); color: #000;
+      border: none; border-radius: 99px; font-size: 0.95rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 6px 24px rgba(34,197,94,.35);
+      display: none; white-space: nowrap; z-index: 50;
+    }
+
+    /* ─── COMPLETED SCREEN ─── */
+    #completed-screen {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: var(--bg); flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 30px;
+    }
+    #completed-screen.show { display: flex; }
+    .trophy { font-size: 4rem; }
+    .congrats-title { font-size: 1.4rem; font-weight: 800; }
+    .congrats-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; max-width: 300px; }
+    #btn-restart { margin-top: 10px; padding: 12px 30px; background: var(--accent); color: #fff; border: none; border-radius: 99px; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+
+    @media (prefers-color-scheme: light) {
+      /* stays dark on purpose — gym use */
+    }
   </style>
 </head>
 <body>
-<header>
-  <h1>Programme Quadriceps – post LCA</h1>
-  <div class="sub">Issam · Utilise avec les consignes de ton kiné / chirurgien</div>
-</header>
-<main>
-  <section class="warning">
-    Cette page est un mémo pratique pour la salle. Elle ne remplace pas l’avis de ton kiné / chirurgien.
-    Si un exercice provoque une douleur vive au genou, arrête-le immédiatement.
-  </section>
 
-  <div id="ex-list"></div>
-</main>
+<header class="app-header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">💪 Programme LCA – Issam</div>
+      <div class="header-sub">Post-opératoire · Renforcement quadriceps</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:1.1rem;font-weight:800;" id="prog-count">0/7</div>
+      <div style="font-size:0.68rem;color:var(--muted);">exercices</div>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+  </div>
+  <div class="tab-row" id="quick-tabs"></div>
+</header>
+
+<main id="ex-list"></main>
+
+<button id="btn-done-all" onclick="showCompleted()">🎉 Séance terminée !</button>
+
+<!-- Rest Timer overlay -->
+<div id="rest-overlay">
+  <div style="font-size:1rem;font-weight:700;">Repos</div>
+  <div class="rest-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="rest-bg" cx="80" cy="80" r="70"/>
+      <circle class="rest-arc" id="rest-arc" cx="80" cy="80" r="70"/>
+    </svg>
+    <div class="rest-num" id="rest-num">90</div>
+  </div>
+  <div class="rest-label">Prépare-toi pour la prochaine série</div>
+  <button id="btn-skip-rest" onclick="skipRest()">Passer ⏭</button>
+</div>
+
+<!-- Completed screen -->
+<div id="completed-screen">
+  <div class="trophy">🏆</div>
+  <div class="congrats-title">Séance terminée !</div>
+  <div class="congrats-sub">Excellent travail Issam. Chaque séance te rapproche d'un genou solide. Repos 48h avant la prochaine.<br><br>💧 Hydrate-toi bien et étire légèrement après.</div>
+  <button id="btn-restart" onclick="restartSession()">🔄 Recommencer</button>
+</div>
+
 <script>
+const REST_DURATION = 90;
 const exercises = [
   {
-    name: '1. Presse à cuisses (1 jambe)',
-    goal: 'Renforcer quadriceps et fessiers, travail unilatéral.',
-    machineUrl: 'https://www.youtube.com/watch?v=t0CEDjh7Ufw',
-    machineLabel: 'Tuto presse à cuisses (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=5M18SvFnii0',
-    altLabel: 'Squats sans machine pour quadriceps (FR)',
-    note: 'Réalise la série une jambe à la fois, en contrôlant bien la descente.'
+    id: 'ex1',
+    name: 'Presse à cuisses',
+    subtitle: '1 jambe · 4 séries × 8 rép.',
+    sets: 4, reps: '8 répétitions',
+    note: '🦵 Descends lentement (3 sec), puis pousse fort. Travaille une jambe à la fois — commence toujours par la jambe opérée.',
+    machineEmbed: 'https://www.youtube.com/embed/t0CEDjh7Ufw',
+    machineLabel: '🎬 Presse à cuisses – tuto',
+    altEmbed: 'https://www.youtube.com/embed/FKViwVfUsQk',
+    altLabel: '🏠 Fente bulgare poids du corps'
   },
   {
-    name: '2. Squat guidé (Smith machine)',
-    goal: 'Travail global cuisses / fessiers, trajectoire sécurisée.',
-    machineUrl: 'https://www.youtube.com/watch?v=s1FpL1kb3Wk',
-    machineLabel: 'Squat à la Smith machine (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=_mV64bZHJxc',
-    altLabel: 'Tutoriel squat barre libre (EN – visuel)',
-    note: 'Garde le genou dans l’axe du pied, amplitude validée par ton kiné.'
+    id: 'ex2',
+    name: 'Squat guidé',
+    subtitle: 'Smith machine · 4 séries × 8 rép.',
+    sets: 4, reps: '8 répétitions',
+    note: '⚙️ Pieds largeur d\'épaules, dos droit. Descends contrôlé, remonte dynamiquement. Garde les genoux dans l\'axe des orteils.',
+    machineEmbed: 'https://www.youtube.com/embed/s1FpL1kb3Wk',
+    machineLabel: '🎬 Squat Smith machine – tuto',
+    altEmbed: 'https://www.youtube.com/embed/SEa9FqtXK4w',
+    altLabel: '🏠 Guide complet Smith machine'
   },
   {
-    name: '3. Fentes / fentes bulgares',
-    goal: 'Renforcer quadriceps et fessiers, travail d’équilibre.',
-    machineUrl: 'https://www.youtube.com/watch?v=ACKECyABSSs',
-    machineLabel: 'Fente bulgare avec haltères (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=FKViwVfUsQk',
-    altLabel: 'Fente bulgare au poids du corps (FR)',
-    note: 'Commence sans charge si besoin, en te tenant à un support.'
+    id: 'ex3',
+    name: 'Fentes bulgares',
+    subtitle: 'Haltères · 3 séries × 10 rép/jambe',
+    sets: 3, reps: '10 répétitions par jambe',
+    note: '🎯 Un pied devant, l\'autre surélevé. Descends verticalement, poids sur la jambe avant. Alterne jambe opérée et jambe saine.',
+    machineEmbed: 'https://www.youtube.com/embed/ACKECyABSSs',
+    machineLabel: '🎬 Fentes bulgares haltères',
+    altEmbed: 'https://www.youtube.com/embed/FKViwVfUsQk',
+    altLabel: '🏠 Fentes bulgares poids du corps'
   },
   {
-    name: '4. Presse excentrique (1 jambe en descente)',
-    goal: 'Accent sur le contrôle excentrique de la jambe opérée.',
-    machineUrl: 'https://www.youtube.com/watch?v=EjpzJlc-oTE',
-    machineLabel: 'Presse à cuisses – exécution contrôlée (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=2HIgg3MG29k',
-    altLabel: 'Squat à la Smith machine – contrôle descente (EN – visuel)',
-    note: 'Monte avec les deux jambes, descends lentement avec la jambe opérée.'
+    id: 'ex4',
+    name: 'Presse excentrique',
+    subtitle: 'Machine · 3 séries × 6 rép.',
+    sets: 3, reps: '6 répétitions',
+    note: '⬇️ Monte avec les DEUX jambes, descends lentement (4–5 sec) avec la jambe opérée seule. C\'est l\'exercice clé du programme !',
+    machineEmbed: 'https://www.youtube.com/embed/EjpzJlc-oTE',
+    machineLabel: '🎬 Presse jambes – technique',
+    altEmbed: 'https://www.youtube.com/embed/t0CEDjh7Ufw',
+    altLabel: '🏠 Variante presse à cuisses'
   },
   {
-    name: '5. Step-down',
-    goal: 'Contrôle de la flexion de genou et stabilité.',
-    machineUrl: 'https://www.youtube.com/watch?v=JHJrl-Lio4U',
-    machineLabel: 'Step down pour la flexion du genou (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=rXrg2j12NJI',
-    altLabel: 'Incline lateral step down (FR)',
-    note: 'Pense à aligner le genou avec le 2e orteil, descente lente.'
+    id: 'ex5',
+    name: 'Step-down',
+    subtitle: 'Marche + charge · 3 séries × 8 rép.',
+    sets: 3, reps: '8 répétitions',
+    note: '🪜 Debout sur la marche, descends lentement (5 sec) avec la jambe opérée. Garde le genou aligné avec le 2e orteil. Bassin stable.',
+    machineEmbed: 'https://www.youtube.com/embed/JHJrl-Lio4U',
+    machineLabel: '🎬 Step-down – renforcement genou',
+    altEmbed: 'https://www.youtube.com/embed/rXrg2j12NJI',
+    altLabel: '🏠 Step-down incliné (variante)'
   },
   {
-    name: '6. Leg extension',
-    goal: 'Isolation quadriceps, à charges validées par le kiné.',
-    machineUrl: 'https://www.youtube.com/watch?v=42',
-    machineLabel: 'Leg extension machine – Decathlon (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=47',
-    altLabel: 'Exercices genou sans machine (FR)',
-    note: 'Respecte l’amplitude maximale autorisée, pas de douleur à l’avant du genou.'
+    id: 'ex6',
+    name: 'Leg extension',
+    subtitle: 'Machine · 3 séries × 10 rép.',
+    sets: 3, reps: '10 répétitions',
+    note: '⚠️ Charges légères à modérées — respecte l\'amplitude autorisée par ton kiné. Monte rapidement, descends lentement.',
+    machineEmbed: 'https://www.youtube.com/embed/xNPZM0vkTS8',
+    machineLabel: '🎬 Leg extension – technique parfaite',
+    altEmbed: 'https://www.youtube.com/embed/IM487uck54A',
+    altLabel: '🏠 Exercices genou sans machine'
   },
   {
-    name: '7. Leg curl',
-    goal: 'Renforcer les ischios (arrière cuisse).',
-    machineUrl: 'https://www.youtube.com/watch?v=40',
-    machineLabel: 'Leg curl allongé machine (FR)',
-    altUrl: 'https://www.youtube.com/watch?v=bXCDTFApU3c',
-    altLabel: 'Leg curl allongé avec élastique (FR)',
-    note: 'Contrôle la montée, ne creuse pas le bas du dos.'
+    id: 'ex7',
+    name: 'Leg curl',
+    subtitle: 'Machine · 3 séries × 10 rép.',
+    sets: 3, reps: '10 répétitions',
+    note: '🔄 Allongé ou assis selon machine. Ramène le talon vers les fesses, montée contrôlée, redescente lente. Flexion maximale.',
+    machineEmbed: 'https://www.youtube.com/embed/KupCnfXU3pM',
+    machineLabel: '🎬 Leg curl allongé – exécution',
+    altEmbed: 'https://www.youtube.com/embed/bXCDTFApU3c',
+    altLabel: '🏠 Leg curl avec élastique'
   }
 ];
 
-const list = document.getElementById('ex-list');
+// State
+const state = {};
+exercises.forEach(ex => {
+  state[ex.id] = { serieDone: Array(ex.sets).fill(false), open: false, videoMode: 'machine' };
+});
 
-exercises.forEach((ex, idx) => {
-  const card = document.createElement('article');
-  card.className = 'ex';
-  if (idx === 0) card.classList.add('open');
+// Rest timer state
+let restInterval = null;
+let restRemaining = REST_DURATION;
 
-  card.innerHTML = `
-    <div class="ex-header">
-      <div>
-        <div class="ex-title">${ex.name}</div>
-        <div style="font-size:0.75rem;color:#9ca3af;">${ex.goal}</div>
+function getCompletedCount() {
+  return exercises.filter(ex => state[ex.id].serieDone.every(Boolean)).length;
+}
+
+function updateProgress() {
+  const done = getCompletedCount();
+  const pct = Math.round(done / exercises.length * 100);
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-count').textContent = done + '/' + exercises.length;
+  // Update tabs
+  exercises.forEach(ex => {
+    const tab = document.getElementById('tab-' + ex.id);
+    if (!tab) return;
+    const exDone = state[ex.id].serieDone.every(Boolean);
+    tab.className = 'tab-btn' + (exDone ? ' done' : '') + (state[ex.id].open ? ' active' : '');
+  });
+  // Show done button
+  document.getElementById('btn-done-all').style.display = done === exercises.length ? 'block' : 'none';
+}
+
+function renderCards() {
+  const list = document.getElementById('ex-list');
+  const tabs = document.getElementById('quick-tabs');
+  list.innerHTML = '';
+  tabs.innerHTML = '';
+
+  exercises.forEach((ex, idx) => {
+    const st = state[ex.id];
+    const exDone = st.serieDone.every(Boolean);
+
+    // Quick tab
+    const tab = document.createElement('button');
+    tab.id = 'tab-' + ex.id;
+    tab.className = 'tab-btn' + (exDone ? ' done' : '');
+    tab.textContent = (idx + 1) + '. ' + ex.name.split(' ').slice(0, 2).join(' ');
+    tab.onclick = () => { scrollToCard(ex.id); };
+    tabs.appendChild(tab);
+
+    // Card
+    const card = document.createElement('article');
+    card.className = 'ex-card' + (st.open ? ' open' : '') + (exDone ? ' done-card' : '');
+    card.id = 'card-' + ex.id;
+
+    const seriesDotsHtml = st.serieDone.map((done, i) =>
+      `<div class="serie-dot${done ? ' done' : ''}" onclick="toggleSerie('${ex.id}',${i})" title="Série ${i+1}">
+        ${done ? '✓' : 'S' + (i+1)}
+      </div>`
+    ).join('');
+
+    const allSeriesDone = st.serieDone.every(Boolean);
+    const nextSerie = st.serieDone.findIndex(d => !d);
+
+    card.innerHTML = `
+      <div class="ex-head" onclick="toggleCard('${ex.id}')">
+        <div class="ex-num${exDone ? ' done' : ''}">${exDone ? '✓' : idx + 1}</div>
+        <div class="ex-info">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-sets">${ex.subtitle}</div>
+        </div>
+        <div class="ex-chevron">▾</div>
       </div>
-      <div class="tag">tap pour ouvrir</div>
-    </div>
-    <div class="ex-body">
-      <div class="btn-row">
-        <a class="btn" href="${ex.machineUrl}" target="_blank" rel="noopener noreferrer">${ex.machineLabel}</a>
-        <a class="btn alt" href="${ex.altUrl}" target="_blank" rel="noopener noreferrer">Alternative / sans machine</a>
-      </div>
-      <iframe loading="lazy" src="${ex.machineUrl.replace('watch?v=','embed/')}"></iframe>
-      <p class="note">${ex.note}</p>
-    </div>
-  `;
+      <div class="ex-body">
+        <div class="vtab-row">
+          <button class="vtab${st.videoMode === 'machine' ? ' active' : ''}" onclick="setVideo('${ex.id}','machine')">🏋️ Avec machine</button>
+          <button class="vtab alt-tab${st.videoMode === 'alt' ? ' active' : ''}" onclick="setVideo('${ex.id}','alt')">🔄 Alternative</button>
+        </div>
+        <div class="video-wrap">
+          <iframe src="${st.videoMode === 'machine' ? ex.machineEmbed : ex.altEmbed}?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="coaching-note">${ex.note}</div>
+        <div class="series-section">
+          <div class="series-label">Séries complétées (touche pour valider)</div>
+          <div class="series-dots">${seriesDotsHtml}</div>
+          <button class="btn-serie" ${allSeriesDone ? 'disabled' : ''} onclick="validateSerie('${ex.id}')">
+            ${allSeriesDone ? '✅ Exercice terminé !' : '✔ Valider série ' + (nextSerie + 1) + '/' + ex.sets}
+          </button>
+        </div>
+      </div>`;
 
-  card.querySelector('.ex-header').addEventListener('click', () => {
-    card.classList.toggle('open');
+    list.appendChild(card);
   });
 
-  list.appendChild(card);
-});
+  updateProgress();
+}
+
+function toggleCard(id) {
+  exercises.forEach(ex => {
+    state[ex.id].open = ex.id === id ? !state[ex.id].open : false;
+  });
+  renderCards();
+  if (state[id].open) {
+    setTimeout(() => {
+      const card = document.getElementById('card-' + id);
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
+function scrollToCard(id) {
+  state[id].open = true;
+  exercises.forEach(ex => { if (ex.id !== id) state[ex.id].open = false; });
+  renderCards();
+  setTimeout(() => {
+    document.getElementById('card-' + id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function setVideo(id, mode) {
+  state[id].videoMode = mode;
+  renderCards();
+}
+
+function toggleSerie(id, idx) {
+  state[id].serieDone[idx] = !state[id].serieDone[idx];
+  renderCards();
+}
+
+function validateSerie(id) {
+  const idx = state[id].serieDone.findIndex(d => !d);
+  if (idx === -1) return;
+  state[id].serieDone[idx] = true;
+  renderCards();
+  const allDone = state[id].serieDone.every(Boolean);
+  if (!allDone) startRest(); // only if more series left
+}
+
+// ── REST TIMER ──
+function startRest() {
+  clearInterval(restInterval);
+  restRemaining = REST_DURATION;
+  updateRestUI();
+  document.getElementById('rest-overlay').classList.add('show');
+  restInterval = setInterval(() => {
+    restRemaining--;
+    updateRestUI();
+    if (restRemaining <= 0) { skipRest(); }
+  }, 1000);
+}
+
+function updateRestUI() {
+  document.getElementById('rest-num').textContent = restRemaining;
+  const circumference = 2 * Math.PI * 70;
+  const offset = circumference * (1 - restRemaining / REST_DURATION);
+  document.getElementById('rest-arc').style.strokeDashoffset = offset;
+}
+
+function skipRest() {
+  clearInterval(restInterval);
+  document.getElementById('rest-overlay').classList.remove('show');
+}
+
+function showCompleted() {
+  document.getElementById('completed-screen').classList.add('show');
+}
+
+function restartSession() {
+  exercises.forEach(ex => {
+    state[ex.id].serieDone = Array(ex.sets).fill(false);
+    state[ex.id].open = false;
+  });
+  document.getElementById('completed-screen').classList.remove('show');
+  renderCards();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+renderCards();
 </script>
 </body>
 </html>
