@@ -1,19 +1,18 @@
+Complete Fitness Workout App (Single File)
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matrix Fitness Workout</title>
-
+  <title>Complete Fitness Workout</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     body {
       background: #0f172a;
       color: white;
       font-family: Arial, sans-serif;
     }
-
     .card {
       background: #1e293b;
       border-radius: 18px;
@@ -21,21 +20,18 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
-
     .exercise {
       background: #334155;
       border-radius: 14px;
       padding: 12px;
       margin-top: 14px;
     }
-
     iframe {
       width: 100%;
       height: 220px;
       border-radius: 12px;
       margin-top: 10px;
     }
-
     .badge {
       display: inline-block;
       background: #22c55e;
@@ -49,41 +45,70 @@
   </style>
 </head>
 <body>
-
   <div class="max-w-5xl mx-auto p-4">
-
     <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold mb-2">Matrix Fitness Workout</h1>
-      <p class="text-slate-300">
-        Exercices classés par groupe musculaire avec vidéos explicatives.
+      <h1 class="text-4xl font-bold mb-2">Complete Fitness Workout</h1>
+      <p class="text-slate-300 mb-5">
+        Tous les exercices classés par groupe musculaire avec vidéos explicatives.
       </p>
+      <div class="flex justify-center">
+        <select
+          id="filter"
+          class="bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white w-full max-w-md"
+          onchange="filterExercises()"
+        >
+          <option value="all">Toutes les parties du corps</option>
+          <option value="pectoraux">Pectoraux</option>
+          <option value="dos">Dos</option>
+          <option value="epaules">Épaules</option>
+          <option value="biceps">Biceps</option>
+          <option value="triceps">Triceps</option>
+          <option value="avantbras">Avant-bras</option>
+          <option value="abdos">Abdos</option>
+          <option value="jambes">Jambes</option>
+          <option value="quadriceps">Quadriceps</option>
+          <option value="ischios">Ischios</option>
+          <option value="mollets">Mollets</option>
+          <option value="fessiers">Fessiers</option>
+          <option value="cardio">Cardio</option>
+        </select>
+      </div>
     </div>
-
+    <script>
+      function filterExercises() {
+        const selected = document.getElementById('filter').value;
+        const sections = document.querySelectorAll('.muscle-group');
+        sections.forEach(section => {
+          const category = section.getAttribute('data-category');
+          if (selected === 'all' || category === selected) {
+            section.style.display = 'block';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+      }
+    </script>
     <!-- PECTORAUX -->
-    <div class="card">
+    <div class="card muscle-group" data-category="pectoraux">
       <h2 class="text-2xl font-bold">Pectoraux</h2>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Chest Press Machine</h3>
         <div class="badge">Machine Matrix</div>
         <p class="mt-2 text-slate-300">
           Exercice principal pour développer les pectoraux.
         </p>
-
         <iframe
           src="https://www.youtube.com/embed/xUm0BiZCWlQ"
           title="Chest Press"
           allowfullscreen>
         </iframe>
       </div>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Pec Deck Fly</h3>
         <div class="badge">Machine Matrix</div>
         <p class="mt-2 text-slate-300">
           Isolation des pectoraux.
         </p>
-
         <iframe
           src="https://www.youtube.com/embed/eozdVDA78K0"
           title="Pec Deck"
@@ -91,32 +116,27 @@
         </iframe>
       </div>
     </div>
-
     <!-- DOS -->
-    <div class="card">
+    <div class="card muscle-group" data-category="dos">
       <h2 class="text-2xl font-bold">Dos</h2>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Lat Pulldown</h3>
         <div class="badge">Machine Matrix</div>
         <p class="mt-2 text-slate-300">
           Développe la largeur du dos.
         </p>
-
         <iframe
           src="https://www.youtube.com/embed/CAwf7n6Luuc"
           title="Lat Pulldown"
           allowfullscreen>
         </iframe>
       </div>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Seated Row</h3>
         <div class="badge">Machine Matrix</div>
         <p class="mt-2 text-slate-300">
           Travaille le milieu du dos.
         </p>
-
         <iframe
           src="https://www.youtube.com/embed/GZbfZ033f74"
           title="Seated Row"
@@ -124,26 +144,21 @@
         </iframe>
       </div>
     </div>
-
     <!-- EPAULES -->
-    <div class="card">
+    <div class="card muscle-group" data-category="epaules">
       <h2 class="text-2xl font-bold">Épaules</h2>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Shoulder Press</h3>
         <div class="badge">Machine Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/qEwKCR5JCog"
           title="Shoulder Press"
           allowfullscreen>
         </iframe>
       </div>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Lateral Raise</h3>
         <div class="badge">Machine Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/3VcKaXpzqRo"
           title="Lateral Raise"
@@ -151,64 +166,77 @@
         </iframe>
       </div>
     </div>
-
-    <!-- BRAS -->
-    <div class="card">
-      <h2 class="text-2xl font-bold">Bras</h2>
-
+    <!-- BICEPS -->
+    <div class="card muscle-group" data-category="biceps">
+      <h2 class="text-2xl font-bold">Biceps</h2>
       <div class="exercise">
-        <h3 class="text-xl font-semibold">Biceps Curl Machine</h3>
-        <div class="badge">Machine Matrix</div>
-
+        <h3 class="text-xl font-semibold">Curl Haltères</h3>
         <iframe
           src="https://www.youtube.com/embed/ykJmrZ5v0Oo"
-          title="Biceps Curl"
           allowfullscreen>
-        </iframe>
+        ></iframe>
       </div>
-
       <div class="exercise">
-        <h3 class="text-xl font-semibold">Triceps Pushdown</h3>
-        <div class="badge">Poulie Matrix</div>
-
+        <h3 class="text-xl font-semibold">Curl Marteau</h3>
         <iframe
-          src="https://www.youtube.com/embed/2-LAMcpzODU"
-          title="Triceps Pushdown"
+          src="https://www.youtube.com/embed/zC3nLlEvin4"
           allowfullscreen>
-        </iframe>
+        ></iframe>
       </div>
     </div>
-
+    <!-- TRICEPS -->
+    <div class="card muscle-group" data-category="triceps">
+      <h2 class="text-2xl font-bold">Triceps</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Triceps Pushdown</h3>
+        <iframe
+          src="https://www.youtube.com/embed/2-LAMcpzODU"
+          allowfullscreen>
+        ></iframe>
+      </div>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Dips</h3>
+        <iframe
+          src="https://www.youtube.com/embed/2z8JmcrW-As"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
+    <!-- AVANT BRAS -->
+    <div class="card muscle-group" data-category="avantbras">
+      <h2 class="text-2xl font-bold">Avant-bras</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Wrist Curl</h3>
+        <iframe
+          src="https://www.youtube.com/embed/s0g4ty29Xgg"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
     <!-- JAMBES -->
-    <div class="card">
+    <div class="card muscle-group" data-category="jambes">
       <h2 class="text-2xl font-bold">Jambes</h2>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Leg Press</h3>
         <div class="badge">Machine Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/IZxyjW7MPJQ"
           title="Leg Press"
           allowfullscreen>
         </iframe>
       </div>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Leg Extension</h3>
         <div class="badge">Machine Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/YyvSfVjQeL0"
           title="Leg Extension"
           allowfullscreen>
         </iframe>
       </div>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Leg Curl</h3>
         <div class="badge">Machine Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/1Tq3QdYUuHs"
           title="Leg Curl"
@@ -216,15 +244,56 @@
         </iframe>
       </div>
     </div>
-
+    <!-- QUADRICEPS -->
+    <div class="card muscle-group" data-category="quadriceps">
+      <h2 class="text-2xl font-bold">Quadriceps</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Squat</h3>
+        <iframe
+          src="https://www.youtube.com/embed/aclHkVaku9U"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
+    <!-- ISCHIOS -->
+    <div class="card muscle-group" data-category="ischios">
+      <h2 class="text-2xl font-bold">Ischios</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Romanian Deadlift</h3>
+        <iframe
+          src="https://www.youtube.com/embed/jEy_czb3RKA"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
+    <!-- MOLLETS -->
+    <div class="card muscle-group" data-category="mollets">
+      <h2 class="text-2xl font-bold">Mollets</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Standing Calf Raise</h3>
+        <iframe
+          src="https://www.youtube.com/embed/-M4-G8p8fmc"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
+    <!-- FESSIERS -->
+    <div class="card muscle-group" data-category="fessiers">
+      <h2 class="text-2xl font-bold">Fessiers</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Hip Thrust</h3>
+        <iframe
+          src="https://www.youtube.com/embed/LM8XHLYJoYs"
+          allowfullscreen>
+        ></iframe>
+      </div>
+    </div>
     <!-- ABDOS -->
-    <div class="card">
+    <div class="card muscle-group" data-category="abdos">
       <h2 class="text-2xl font-bold">Abdos</h2>
-
       <div class="exercise">
         <h3 class="text-xl font-semibold">Cable Crunch</h3>
         <div class="badge">Poulie Matrix</div>
-
         <iframe
           src="https://www.youtube.com/embed/AV5PmZJIrrw"
           title="Cable Crunch"
@@ -232,12 +301,49 @@
         </iframe>
       </div>
     </div>
-
-    <div class="text-center text-slate-400 mt-10 mb-6 text-sm">
-      Optimisé mobile • Compatible GitHub Pages • Fichier unique
+    <!-- CARDIO -->
+    <div class="card muscle-group" data-category="cardio">
+      <h2 class="text-2xl font-bold">Cardio</h2>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Rameur</h3>
+        <iframe
+          src="https://www.youtube.com/embed/pymKHcywkuc"
+          allowfullscreen>
+        ></iframe>
+      </div>
+      <div class="exercise">
+        <h3 class="text-xl font-semibold">Tapis de course</h3>
+        <iframe
+          src="https://www.youtube.com/embed/_kGESn8ArrU"
+          allowfullscreen>
+        ></iframe>
+      </div>
     </div>
-
+    <div class="text-center text-slate-400 mt-10 mb-6 text-sm">
+      Optimisé mobile • Menu de filtrage • Compatible GitHub Pages • Fichier unique
+    </div>
   </div>
-
 </body>
 </html>
+
+Fonctionnalités
+
+* Filtrage par groupe musculaire
+* Compatible smartphone
+* Vidéos intégrées YouTube
+* Design responsive
+* Utilisable directement à la salle
+* Hébergement simple sur GitHub Pages
+
+Hébergement sur GitHub Pages
+
+1. Crée un dépôt GitHub.
+2. Crée un fichier index.html.
+3. Copie tout le code dedans.
+4. Push sur GitHub.
+5. Va dans :
+    * Settings
+    * Pages
+    * Deploy from branch
+    * Branche main
+6. Ton site sera accessible depuis ton téléphone.
