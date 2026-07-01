@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programme Vacances Gardien - Younes</title>
+  <meta name="description" content="Programme sportif personnalisé pour Younes, gardien de football de 15 ans : condition physique, renforcement, souffle, appuis, mobilité et technique gardien." />
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0d1b2f;
+      --card: #10233b;
+      --card2: #142a45;
+      --text: #eef6ff;
+      --muted: #a8bdd4;
+      --accent: #47d7ac;
+      --accent2: #64a8ff;
+      --warn: #ffd166;
+      --danger: #ff6b6b;
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 20px 50px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, rgba(71,215,172,.22), transparent 33%), radial-gradient(circle at top right, rgba(100,168,255,.18), transparent 30%), linear-gradient(180deg, var(--bg), #050912 65%);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+    header.hero {
+      min-height: 92vh;
+      display: grid;
+      place-items: center;
+      padding: 72px 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .badge {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 14px;
+    }
+    h1 { font-size: clamp(38px, 7vw, 76px); line-height: 1.02; margin: 20px 0 18px; letter-spacing: -0.055em; }
+    h2 { font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 0 0 18px; letter-spacing: -0.035em; }
+    h3 { margin: 0 0 10px; font-size: 22px; }
+    h4 { margin: 16px 0 8px; }
+    p { margin: 0 0 14px; color: var(--muted); }
+    .lead { max-width: 840px; font-size: clamp(18px, 2.2vw, 23px); color: #d9e8f8; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      font-weight: 800;
+      transition: .2s transform, .2s background;
+    }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.13); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #06111f; border: 0; }
+    nav.sticky {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(5,9,18,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    nav .nav-inner { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; }
+    nav a { white-space: nowrap; text-decoration: none; color: var(--muted); padding: 9px 12px; border-radius: 999px; font-weight: 700; font-size: 14px; }
+    nav a:hover { background: rgba(255,255,255,.08); color: var(--text); }
+    section { padding: 70px 0; }
+    .grid { display: grid; gap: 18px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.035));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .card strong { color: var(--text); }
+    .pill { display:inline-block; padding: 6px 10px; border-radius:999px; font-size: 12px; font-weight:800; color:#07111f; background: var(--accent); margin: 0 6px 8px 0; }
+    .pill.blue { background: var(--accent2); }
+    .pill.yellow { background: var(--warn); }
+    .pill.red { background: var(--danger); color: white; }
+    .week-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; }
+    .week-table th, .week-table td { border-bottom: 1px solid var(--line); padding: 14px; text-align: left; vertical-align: top; }
+    .week-table th { color: #07111f; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+    .week-table td { color: var(--muted); background: rgba(255,255,255,.04); }
+    .exercise {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.045);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .exercise summary {
+      cursor: pointer;
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 900;
+      font-size: 20px;
+    }
+    .exercise summary::-webkit-details-marker { display: none; }
+    .exercise summary span { color: var(--muted); font-size: 14px; font-weight: 700; }
+    .exercise[open] summary { border-bottom: 1px solid var(--line); }
+    .exercise-body { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; padding: 22px; }
+    ul, ol { color: var(--muted); padding-left: 22px; margin-top: 6px; }
+    li { margin-bottom: 6px; }
+    .video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+    .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .session {
+      border-left: 5px solid var(--accent);
+      margin: 18px 0;
+    }
+    .session:nth-child(even) { border-left-color: var(--accent2); }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+    .check-row { display:flex; align-items:center; gap:10px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--muted); }
+    .small { font-size: 13px; color: var(--muted); }
+    .warning { border-color: rgba(255,209,102,.35); background: rgba(255,209,102,.08); }
+    footer { padding: 40px 0 70px; color: var(--muted); border-top: 1px solid var(--line); }
+    @media (max-width: 820px) {
+      .grid.cols-3, .grid.cols-2, .exercise-body { grid-template-columns: 1fr; }
+      header.hero { min-height: auto; padding-top: 46px; }
+      .week-table { font-size: 14px; }
+      .week-table th, .week-table td { padding: 10px; }
+    }
+    @media print {
+      nav, iframe, .cta-row { display: none !important; }
+      body { background: white; color: black; }
+      p, li, td { color: #222; }
+      .card, .exercise { box-shadow: none; border-color: #ddd; background: white; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sticky">
+    <div class="wrap nav-inner">
+      <a href="#objectifs">Objectifs</a>
+      <a href="#planning">Planning</a>
+      <a href="#seances">Séances</a>
+      <a href="#exercices">Vidéos exercices</a>
+      <a href="#progression">Progression</a>
+      <a href="#tracker">Suivi</a>
+      <a href="#materiel">Matériel</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <span class="badge">Programme vacances • Gardien de football • 15 ans</span>
+      <h1>Younes, prépare ta reprise comme un gardien sérieux.</h1>
+      <p class="lead">Un programme simple à suivre pendant les vacances pour maintenir le souffle, renforcer les jambes et le haut du corps, améliorer les appuis, la mobilité, les plongeons et la condition physique générale.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#planning">Voir le planning</a>
+        <a class="btn" href="#exercices">Voir les vidéos</a>
+        <a class="btn" href="#tracker">Cocher mes séances</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="objectifs">
+      <div class="wrap grid cols-3">
+        <div class="card"><span class="pill">Souffle</span><h3>Cardio utile au football</h3><p>Fractionné court, corde à sauter, course facile et récupération active. Objectif : être capable d’enchaîner les efforts sans perdre en lucidité.</p></div>
+        <div class="card"><span class="pill blue">Force</span><h3>Musculation fonctionnelle</h3><p>Jambes, gainage, épaules, dos et fessiers. Pas de charge maximale : on cherche du contrôle, de la stabilité et de la puissance transférable au poste.</p></div>
+        <div class="card"><span class="pill yellow">Gardien</span><h3>Appuis et plongeons</h3><p>Déplacements latéraux, prises de balle, relances, chutes contrôlées et explosivité courte.</p></div>
+      </div>
+    </section>
+
+    <section id="regles">
+      <div class="wrap grid cols-2">
+        <div class="card warning">
+          <h2>Règles de sécurité</h2>
+          <ul>
+            <li>Échauffement obligatoire avant chaque séance.</li>
+            <li>Aucune douleur articulaire ne doit être ignorée : genou, cheville, dos, épaule.</li>
+            <li>Technique prioritaire sur la charge et la vitesse.</li>
+            <li>RPE cible : 6 à 8/10. Pas besoin de finir détruit.</li>
+            <li>Plongeons uniquement sur herbe, tapis ou surface adaptée.</li>
+            <li>Si fatigue forte plusieurs jours : réduire le volume de 30 à 40 %.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Échauffement type — 12 min</h2>
+          <ol>
+            <li>3 min footing léger ou corde à sauter.</li>
+            <li>30 s montées de genoux + 30 s talons-fesses + 30 s pas chassés.</li>
+            <li>Mobilité : chevilles, hanches, épaules, rotations thoraciques.</li>
+            <li>Activation : 10 squats poids du corps, 12 ponts fessiers, 30 s planche, 2 × 15 s petits sauts.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="planning">
+      <div class="wrap">
+        <h2>Planning hebdomadaire</h2>
+        <p>Rythme conseillé : 5 séances principales + 1 option légère + 1 repos complet.</p>
+        <table class="week-table">
+          <thead><tr><th>Jour</th><th>Séance</th><th>Objectif</th></tr></thead>
+          <tbody>
+            <tr><td>Lundi</td><td>Force bas du corps + appuis</td><td>Jambes, stabilité, déplacements latéraux.</td></tr>
+            <tr><td>Mardi</td><td>Cardio fractionné + technique gardien</td><td>Souffle, répétition d’efforts, prises de balle.</td></tr>
+            <tr><td>Mercredi</td><td>Mobilité + gainage + récupération active</td><td>Prévention blessures et récupération.</td></tr>
+            <tr><td>Jeudi</td><td>Force haut du corps + plongeons</td><td>Épaules, dos, gainage et chutes contrôlées.</td></tr>
+            <tr><td>Vendredi</td><td>Vitesse + pliométrie + relances</td><td>Explosivité, appuis courts, qualité des relances.</td></tr>
+            <tr><td>Samedi</td><td>Endurance légère optionnelle</td><td>Footing, vélo ou natation facile.</td></tr>
+            <tr><td>Dimanche</td><td>Repos complet</td><td>Sommeil, hydratation, récupération.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="seances">
+      <div class="wrap">
+        <h2>Détail des séances</h2>
+        <div class="card session">
+          <h3>Séance 1 — Force bas du corps + appuis</h3>
+          <p><strong>Durée :</strong> 55 à 65 min</p>
+          <ul>
+            <li>Goblet squat : 3 × 10</li><li>Fente arrière : 3 × 8 par jambe</li><li>Hip thrust / pont fessier : 3 × 12 à 15</li><li>Soulevé de terre roumain léger : 3 × 10</li><li>Mollets debout : 3 × 15 à 20</li><li>Gainage latéral : 3 × 30 à 40 s par côté</li><li>Appuis : 4 × 20 s travail / 40 s repos</li><li>Corde : 6 × 30 s / 30 s repos</li>
+          </ul>
+        </div>
+        <div class="card session">
+          <h3>Séance 2 — Cardio fractionné + technique gardien</h3>
+          <ul>
+            <li>10 min footing léger.</li><li>8 × 30 s rapide / 30 s lent.</li><li>Repos 3 min.</li><li>6 × 15 s sprint contrôlé / 45 s marche.</li><li>Prises de balle au sol : 3 × 10.</li><li>Prises mi-hauteur : 3 × 10.</li><li>Déplacements latéraux + arrêt : 4 × 6.</li><li>Relances main et pied : 15 à 20 min.</li>
+          </ul>
+        </div>
+        <div class="card session">
+          <h3>Séance 3 — Mobilité + gainage</h3>
+          <ul>
+            <li>20 à 25 min vélo, marche rapide ou footing très lent.</li><li>Mobilité hanches, ischios, mollets, adducteurs, épaules.</li><li>3 tours : planche 40 s, dead bug 10/côté, bird dog 10/côté, hollow hold 20–30 s, planche latérale 30 s/côté.</li>
+          </ul>
+        </div>
+        <div class="card session">
+          <h3>Séance 4 — Force haut du corps + plongeons</h3>
+          <ul>
+            <li>Pompes : 3 × 8 à 15.</li><li>Rowing élastique ou haltères : 3 × 12.</li><li>Développé épaules léger : 3 × 8 à 10.</li><li>Face pull élastique : 3 × 15.</li><li>Rotation externe épaule : 3 × 12/côté.</li><li>Farmer walk : 4 × 20 m.</li><li>Chutes latérales et plongeons bas : 15 à 20 min.</li>
+          </ul>
+        </div>
+        <div class="card session">
+          <h3>Séance 5 — Vitesse + pliométrie + relances</h3>
+          <ul>
+            <li>Sprints 5 m : 6 répétitions.</li><li>Sprints 10 m : 6 répétitions.</li><li>Départs assis ou couché : 6 répétitions.</li><li>Déplacement latéral + sprint : 6 répétitions.</li><li>Sauts verticaux : 3 × 6.</li><li>Sauts latéraux courts : 3 × 8/côté.</li><li>Relances main longue, roulée, pied droit, pied gauche, dégagement contrôlé.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="exercices">
+      <div class="wrap">
+        <h2>Bibliothèque d’exercices avec consignes et vidéos</h2>
+        <p>Ouvre chaque exercice avant de le faire. Regarde la vidéo une première fois, puis refais le mouvement lentement.</p>
+
+        <details class="exercise" open><summary>Goblet squat <span>Jambes • gainage</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Haltère ou kettlebell collé à la poitrine.</li><li>Pieds largeur épaules, pointes légèrement ouvertes.</li><li>Descends en gardant le dos neutre et la poitrine haute.</li><li>Genoux dans l’axe des pieds, pas vers l’intérieur.</li><li>Remonte en poussant dans le milieu du pied.</li></ul><h4>Erreur à éviter</h4><p>Arrondir le dos ou décoller les talons.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/gCESNsDsbqk" title="Goblet squat" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Fente arrière <span>Jambes • équilibre</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Recule d’un grand pas, buste haut.</li><li>Descends verticalement, les deux genoux proches de 90°.</li><li>Le genou avant reste aligné avec le pied.</li><li>Pousse sur le talon avant pour revenir.</li></ul><h4>Erreur à éviter</h4><p>Se pencher en avant ou laisser le genou rentrer vers l’intérieur.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/T-a6-369Rrg" title="Fentes arrière" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Hip thrust / pont fessier <span>Fessiers • ischios</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Pieds à plat, largeur bassin.</li><li>Gaine le ventre avant de monter.</li><li>Monte les hanches en serrant les fessiers.</li><li>Évite de cambrer en haut.</li><li>Redescends lentement.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/4z_2oHvIvkA" title="Hip thrust" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Soulevé de terre roumain léger <span>Ischios • dos stable</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Genoux légèrement fléchis.</li><li>Hanches vers l’arrière comme pour fermer une porte avec les fesses.</li><li>Dos neutre, épaules basses, charges proches des jambes.</li><li>Descends jusqu’à sentir les ischios, pas plus bas.</li><li>Remonte en poussant les hanches vers l’avant.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/aa57T45iFSE" title="Dumbbell Romanian deadlift" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Mollets debout <span>Chevilles • appuis</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Debout, corps droit, appui possible sur un mur.</li><li>Monte sur la pointe des pieds.</li><li>Marque 1 seconde en haut.</li><li>Redescends lentement, sans rebond.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/gwLzBJYoWlI" title="Calf raises" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Planche latérale <span>Gainage anti-bascule</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Coude sous l’épaule.</li><li>Corps aligné tête-bassin-pieds.</li><li>Hanches hautes, ventre serré.</li><li>Respire calmement.</li></ul><p>Version facile : genou du bas au sol.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/XeN4pEZZJNI" title="Side plank" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Corde à sauter <span>Cardio • coordination</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Petits sauts, rebond léger.</li><li>Rotation avec les poignets, pas avec les épaules.</li><li>Regard devant, buste relâché.</li><li>Atterris sur l’avant du pied.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/3dwMzERxpRw" title="Jump rope beginner" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Pompes <span>Poussée • haut du corps</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Mains légèrement plus larges que les épaules.</li><li>Corps gainé comme une planche.</li><li>Descends poitrine vers le sol.</li><li>Coudes à environ 45° du buste.</li><li>Remonte sans casser l’alignement du bassin.</li></ul><p>Version facile : mains sur banc ou genoux au sol.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/WDIpL0pjun0" title="Push up" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Rowing élastique <span>Dos • posture</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Élastique ancré ou sous les pieds.</li><li>Dos droit, ventre serré.</li><li>Tire les coudes vers l’arrière.</li><li>Serre les omoplates 1 seconde.</li><li>Retour lent, sans relâcher d’un coup.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/LSkyinhmA8k" title="Resistance band row" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Face pull élastique <span>Épaules • prévention</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Élastique fixé à hauteur du visage.</li><li>Tire vers les yeux/le front.</li><li>Coudes hauts, épaules basses.</li><li>Serre les omoplates, contrôle le retour.</li></ul><h4>Erreur à éviter</h4><p>Hausser les épaules ou tirer avec le bas du dos.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/PYj77in44ms" title="Band face pull" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Dead bug <span>Gainage profond</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Allongé sur le dos, bras vers le plafond.</li><li>Genoux au-dessus des hanches.</li><li>Bas du dos proche du sol.</li><li>Allonge bras et jambe opposés lentement.</li><li>Reviens au centre sans perdre le gainage.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/GbSC02oU3To" title="Dead bug" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Plongeon gardien <span>Technique spécifique</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Commence bas, genoux fléchis, appuis actifs.</li><li>Fais un petit pas d’impulsion vers le ballon.</li><li>Les mains vont vers le ballon avant le corps.</li><li>Atterris sur le côté, pas sur le ventre ni sur le coude.</li><li>Progression : assis → à genoux → debout → frappe légère.</li></ul><h4>Sécurité</h4><p>Uniquement sur surface souple et avec intensité progressive.</p></div><div class="video"><iframe src="https://www.youtube.com/embed/MRKgjlRiLok" title="Goalkeeper diving techniques" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Relances gardien <span>Main • pied</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Choisis une cible précise avant de relancer.</li><li>Relance roulée : corps orienté vers la cible, geste fluide.</li><li>Relance à la main longue : bras accompagne vers la cible.</li><li>Passe au pied : pied d’appui orienté, tête stable, dosage.</li><li>Qualité avant puissance.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/Y_Oll67U9IQ" title="Goalkeeper distribution drills" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Sprints courts et appuis <span>Explosivité</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Départs propres, pas de sprint maximal à froid.</li><li>Reste bas sur les premiers appuis.</li><li>Bras actifs, regard devant.</li><li>Repos suffisant pour garder de la qualité.</li><li>Si la technique baisse, la série s’arrête.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/b23i9MRqjf8" title="Sprint technique" allowfullscreen></iframe></div></div></details>
+
+        <details class="exercise"><summary>Sauts latéraux / pliométrie <span>Puissance • réception</span></summary><div class="exercise-body"><div><h4>Consignes</h4><ul><li>Saute court et propre au départ.</li><li>Réception silencieuse.</li><li>Genou aligné avec le pied.</li><li>Garde le bassin stable.</li><li>Qualité > quantité.</li></ul></div><div class="video"><iframe src="https://www.youtube.com/embed/McBg7nru_hI" title="Lateral bounds" allowfullscreen></iframe></div></div></details>
+      </div>
+    </section>
+
+    <section id="progression">
+      <div class="wrap grid cols-3">
+        <div class="card"><span class="pill">Semaines 1–2</span><h3>Remise en route</h3><p>Charges légères, tempo lent, recherche de technique. Fractionné modéré. Plongeons progressifs.</p></div>
+        <div class="card"><span class="pill blue">Semaines 3–4</span><h3>Développement</h3><p>Ajouter 1 série sur quelques exercices ou 1–2 répétitions. Intensité cardio plus haute, sans perdre la qualité.</p></div>
+        <div class="card"><span class="pill yellow">Semaines 5–6</span><h3>Spécifique reprise</h3><p>Plus d’appuis, vitesse courte, relances et plongeons. Réduire la charge lourde si la reprise club approche.</p></div>
+      </div>
+    </section>
+
+    <section id="tracker">
+      <div class="wrap">
+        <h2>Checklist de suivi</h2>
+        <p>Coche les séances réalisées. Les cases restent enregistrées dans ce navigateur.</p>
+        <div class="grid cols-2" id="checklists"></div>
+        <div class="cta-row"><button class="btn" onclick="resetChecks()">Réinitialiser les cases</button></div>
+      </div>
+    </section>
+
+    <section id="materiel">
+      <div class="wrap grid cols-3">
+        <div class="card"><h3>Priorité 1</h3><ul><li>Corde à sauter</li><li>Élastiques</li><li>Mini-bandes</li><li>Plots</li><li>Tapis</li><li>Ballon et gants</li></ul></div>
+        <div class="card"><h3>Priorité 2</h3><ul><li>Kettlebell 8–12 kg selon niveau</li><li>Haltères réglables légers/modérés</li><li>Medicine ball 3–5 kg</li><li>Échelle de rythme</li></ul></div>
+        <div class="card"><h3>Bonus</h3><ul><li>TRX</li><li>Mini-haies</li><li>Montre cardio</li><li>Foam roller</li></ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><strong>Note parentale :</strong> ce programme est un support sportif général. Il ne remplace pas le suivi d’un entraîneur, d’un kiné ou d’un médecin du sport. Adapter la charge à l’état de fatigue, à la croissance et à l’historique de blessures de Younes.</p>
+      <p class="small">Page statique prête pour GitHub Pages. Dernière version : juillet 2026.</p>
+    </div>
+  </footer>
+
+  <script>
+    const weeks = [1,2,3,4,5,6];
+    const sessions = ["Lundi - Bas du corps + appuis", "Mardi - Cardio + technique", "Mercredi - Mobilité + gainage", "Jeudi - Haut du corps + plongeons", "Vendredi - Vitesse + relances", "Samedi - Endurance optionnelle"];
+    const container = document.getElementById('checklists');
+    weeks.forEach(w => {
+      const card = document.createElement('div'); card.className = 'card';
+      card.innerHTML = `<h3>Semaine ${w}</h3>`;
+      sessions.forEach((s, i) => {
+        const id = `younes-w${w}-s${i}`;
+        const row = document.createElement('label'); row.className = 'check-row';
+        row.innerHTML = `<input type="checkbox" id="${id}"> <span>${s}</span>`;
+        card.appendChild(row);
+      });
+      container.appendChild(card);
+    });
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.checked = localStorage.getItem(cb.id) === '1';
+      cb.addEventListener('change', () => localStorage.setItem(cb.id, cb.checked ? '1' : '0'));
+    });
+    function resetChecks(){
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; localStorage.removeItem(cb.id); });
+    }
+  </script>
+</body>
+</html>
