@@ -1,351 +1,272 @@
-Complete Fitness Workout App (Single File)
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Complete Fitness Workout</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Programme reprise LCA — Bas du corps, pectoraux, abdos</title>
+  <meta name="description" content="Programme 4 séances/semaine adapté aux machines de salle type L'Appart Fitness, avec vidéos YouTube intégrées pour chaque exercice." />
   <style>
-    body {
-      background: #0f172a;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    .card {
-      background: #1e293b;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .exercise {
-      background: #334155;
-      border-radius: 14px;
-      padding: 12px;
-      margin-top: 14px;
-    }
-    iframe {
-      width: 100%;
-      height: 220px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
-    .badge {
-      display: inline-block;
-      background: #22c55e;
-      color: black;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
+    :root { --bg:#0f172a; --panel:#111827; --card:#ffffff; --text:#e5e7eb; --muted:#9ca3af; --accent:#22c55e; --accent2:#38bdf8; --danger:#f97316; --ink:#111827; --line:#e5e7eb; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:#f8fafc; color:var(--ink); line-height:1.55; }
+    header { background:linear-gradient(135deg,#0f172a,#1e3a8a); color:white; padding:48px 20px 36px; }
+    .container { max-width:1180px; margin:auto; }
+    .hero { display:grid; grid-template-columns:1.5fr .8fr; gap:24px; align-items:center; }
+    h1 { font-size:clamp(2rem,4vw,3.6rem); line-height:1.05; margin:0 0 16px; letter-spacing:-.04em; }
+    .lead { font-size:1.12rem; color:#dbeafe; max-width:780px; }
+    .hero-box { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); padding:22px; border-radius:24px; backdrop-filter: blur(8px); }
+    .hero-box strong { color:#bbf7d0; }
+    nav { position:sticky; top:0; z-index:3; background:white; border-bottom:1px solid var(--line); }
+    nav .container { display:flex; gap:12px; flex-wrap:wrap; padding:12px 20px; }
+    nav a { color:#0f172a; text-decoration:none; padding:8px 12px; border-radius:999px; background:#f1f5f9; font-weight:600; font-size:.92rem; }
+    main { padding:28px 20px 60px; }
+    .alert { border-left:5px solid var(--danger); background:#fff7ed; padding:16px 18px; border-radius:14px; margin:18px 0 28px; }
+    .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:22px 0; }
+    .metric { background:white; border:1px solid var(--line); border-radius:20px; padding:18px; box-shadow:0 6px 20px rgba(15,23,42,.05); }
+    .metric b { font-size:1.4rem; display:block; }
+    .session-card { background:white; border:1px solid var(--line); border-radius:24px; padding:22px; margin:20px 0; box-shadow:0 10px 28px rgba(15,23,42,.06); }
+    .session-head span,.tag { display:inline-block; font-weight:800; color:#065f46; background:#dcfce7; border-radius:999px; padding:5px 10px; font-size:.82rem; }
+    h2 { margin:12px 0 6px; font-size:1.55rem; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; margin-top:14px; }
+    th,td { padding:13px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#f8fafc; color:#334155; font-size:.9rem; }
+    td a { color:#2563eb; font-weight:700; }
+    .note { color:#475569; background:#f8fafc; padding:12px 14px; border-radius:14px; }
+    .toolbar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin:16px 0 22px; }
+    input[type="search"] { flex:1; min-width:260px; padding:13px 16px; border:1px solid #cbd5e1; border-radius:14px; font-size:1rem; }
+    .exercise-grid { display:grid; grid-template-columns:1fr; gap:18px; }
+    .exercise-card { display:grid; grid-template-columns:.85fr 1.15fr; gap:18px; background:white; border:1px solid var(--line); border-radius:24px; padding:18px; box-shadow:0 8px 22px rgba(15,23,42,.06); }
+    .exercise-info h3 { margin:10px 0; font-size:1.45rem; }
+    .exercise-info ul { padding-left:20px; margin-bottom:16px; }
+    .video-wrap { position:relative; width:100%; aspect-ratio:16/9; background:#0f172a; border-radius:18px; overflow:hidden; }
+    iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .video-link { display:inline-block; color:white; background:#0f172a; padding:10px 13px; border-radius:12px; text-decoration:none; font-weight:700; }
+    .phase { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .phase article { background:white; border:1px solid var(--line); border-radius:22px; padding:18px; }
+    footer { background:#0f172a; color:#cbd5e1; padding:30px 20px; }
+    footer a { color:#93c5fd; }
+    @media (max-width:900px) { .hero,.exercise-card,.phase { grid-template-columns:1fr; } .grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:560px) { .grid { grid-template-columns:1fr; } th,td { padding:10px 8px; } }
   </style>
 </head>
 <body>
-  <div class="max-w-5xl mx-auto p-4">
-    <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold mb-2">Complete Fitness Workout</h1>
-      <p class="text-slate-300 mb-5">
-        Tous les exercices classés par groupe musculaire avec vidéos explicatives.
-      </p>
-      <div class="flex justify-center">
-        <select
-          id="filter"
-          class="bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white w-full max-w-md"
-        >
-          <option value="all">Toutes les parties du corps</option>
-          <option value="pectoraux">Pectoraux</option>
-          <option value="dos">Dos</option>
-          <option value="epaules">Épaules</option>
-          <option value="biceps">Biceps</option>
-          <option value="triceps">Triceps</option>
-          <option value="avantbras">Avant-bras</option>
-          <option value="abdos">Abdos</option>
-          <option value="jambes">Jambes</option>
-          <option value="quadriceps">Quadriceps</option>
-          <option value="ischios">Ischios</option>
-          <option value="mollets">Mollets</option>
-          <option value="fessiers">Fessiers</option>
-          <option value="cardio">Cardio</option>
-        </select>
-      </div>
+<header>
+  <div class="container hero">
+    <div>
+      <h1>Programme 4 séances — reprise bas du corps, pectoraux et abdos</h1>
+      <p class="lead">Adapté à un homme de 40 ans, 1m78, 80 kg, post-opération LCA avec rééducation terminée. Priorité : bas du corps, stabilité du genou, reprise progressive du football en septembre.</p>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const filter = document.getElementById('filter');
-        filter.addEventListener('change', filterExercises);
-      });
-      function filterExercises() {
-        const selected = document.getElementById('filter').value;
-        const sections = document.querySelectorAll('.muscle-group');
-        sections.forEach(section => {
-          const category = section.getAttribute('data-category');
-          if (selected === 'all' || category === selected) {
-            section.style.display = 'block';
-          } else {
-            section.style.display = 'none';
-          }
-        });
-      }
-    </script>
-    <!-- PECTORAUX -->
-    <div class="card muscle-group" data-category="pectoraux">
-      <h2 class="text-2xl font-bold">Pectoraux</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Chest Press Machine</h3>
-        <div class="badge">Machine Matrix</div>
-        <p class="mt-2 text-slate-300">
-          Exercice principal pour développer les pectoraux.
-        </p>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/xUm0BiZCWlQ"
-          title="Chest Press"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Pec Deck Fly</h3>
-        <div class="badge">Machine Matrix</div>
-        <p class="mt-2 text-slate-300">
-          Isolation des pectoraux.
-        </p>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/eozdVDA78K0"
-          title="Pec Deck"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-    <!-- DOS -->
-    <div class="card muscle-group" data-category="dos">
-      <h2 class="text-2xl font-bold">Dos</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Lat Pulldown</h3>
-        <div class="badge">Machine Matrix</div>
-        <p class="mt-2 text-slate-300">
-          Développe la largeur du dos.
-        </p>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/CAwf7n6Luuc"
-          title="Lat Pulldown"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Seated Row</h3>
-        <div class="badge">Machine Matrix</div>
-        <p class="mt-2 text-slate-300">
-          Travaille le milieu du dos.
-        </p>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/GZbfZ033f74"
-          title="Seated Row"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-    <!-- EPAULES -->
-    <div class="card muscle-group" data-category="epaules">
-      <h2 class="text-2xl font-bold">Épaules</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Shoulder Press</h3>
-        <div class="badge">Machine Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/qEwKCR5JCog"
-          title="Shoulder Press"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Lateral Raise</h3>
-        <div class="badge">Machine Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/3VcKaXpzqRo"
-          title="Lateral Raise"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-    <!-- BICEPS -->
-    <div class="card muscle-group" data-category="biceps">
-      <h2 class="text-2xl font-bold">Biceps</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Curl Haltères</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/ykJmrZ5v0Oo"
-          allowfullscreen>
-        ></iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Curl Marteau</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/zC3nLlEvin4"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- TRICEPS -->
-    <div class="card muscle-group" data-category="triceps">
-      <h2 class="text-2xl font-bold">Triceps</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Triceps Pushdown</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/2-LAMcpzODU"
-          allowfullscreen>
-        ></iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Dips</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/2z8JmcrW-As"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- AVANT BRAS -->
-    <div class="card muscle-group" data-category="avantbras">
-      <h2 class="text-2xl font-bold">Avant-bras</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Wrist Curl</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/s0g4ty29Xgg"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- JAMBES -->
-    <div class="card muscle-group" data-category="jambes">
-      <h2 class="text-2xl font-bold">Jambes</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Leg Press</h3>
-        <div class="badge">Machine Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/IZxyjW7MPJQ"
-          title="Leg Press"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Leg Extension</h3>
-        <div class="badge">Machine Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/YyvSfVjQeL0"
-          title="Leg Extension"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Leg Curl</h3>
-        <div class="badge">Machine Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/1Tq3QdYUuHs"
-          title="Leg Curl"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-    <!-- QUADRICEPS -->
-    <div class="card muscle-group" data-category="quadriceps">
-      <h2 class="text-2xl font-bold">Quadriceps</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Squat</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/aclHkVaku9U"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- ISCHIOS -->
-    <div class="card muscle-group" data-category="ischios">
-      <h2 class="text-2xl font-bold">Ischios</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Romanian Deadlift</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/jEy_czb3RKA"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- MOLLETS -->
-    <div class="card muscle-group" data-category="mollets">
-      <h2 class="text-2xl font-bold">Mollets</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Standing Calf Raise</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/-M4-G8p8fmc"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- FESSIERS -->
-    <div class="card muscle-group" data-category="fessiers">
-      <h2 class="text-2xl font-bold">Fessiers</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Hip Thrust</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/LM8XHLYJoYs"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <!-- ABDOS -->
-    <div class="card muscle-group" data-category="abdos">
-      <h2 class="text-2xl font-bold">Abdos</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Cable Crunch</h3>
-        <div class="badge">Poulie Matrix</div>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/AV5PmZJIrrw"
-          title="Cable Crunch"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-    <!-- CARDIO -->
-    <div class="card muscle-group" data-category="cardio">
-      <h2 class="text-2xl font-bold">Cardio</h2>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Rameur</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/pymKHcywkuc"
-          allowfullscreen>
-        ></iframe>
-      </div>
-      <div class="exercise">
-        <h3 class="text-xl font-semibold">Tapis de course</h3>
-        <iframe
-          loading="lazy"
-          src="https://www.youtube.com/embed/_kGESn8ArrU"
-          allowfullscreen>
-        ></iframe>
-      </div>
-    </div>
-    <div class="text-center text-slate-400 mt-10 mb-6 text-sm">
-      Optimisé mobile • Menu de filtrage • Compatible GitHub Pages • Fichier unique
-    </div>
+    <aside class="hero-box">
+      <p><strong>Format :</strong> 4 séances/semaine, 60–75 min</p>
+      <p><strong>Intensité :</strong> RPE 6 à 7 majoritairement, sans échec</p>
+      <p><strong>Matériel ciblé :</strong> machines guidées, poulies, Smith machine, cardio et zone fonctionnelle type L’Appart Fitness</p>
+    </aside>
   </div>
+</header>
+<nav><div class="container"><a href="#programme">Programme</a><a href="#videos">Vidéos exercices</a><a href="#progression">Progression foot</a><a href="#securite">Sécurité LCA</a></div></nav>
+<main class="container">
+  <section class="alert" id="securite"><strong>Important :</strong> ce programme ne remplace pas l’avis de ton chirurgien, kiné ou médecin du sport. Stoppe ou réduis si douleur vive, gonflement dans les 24 h, boiterie, instabilité ou appréhension marquée. Pour reprise foot complète : vise des tests fonctionnels validés, en particulier force/sauts et symétrie proche de 90 %.</section>
+  <section class="grid">
+    <div class="metric"><b>4</b> séances/semaine</div><div class="metric"><b>2</b> séances bas du corps fortes</div><div class="metric"><b>1</b> séance pectoraux/abdos</div><div class="metric"><b>1</b> séance force-vitesse contrôlée</div>
+  </section>
+  <section id="programme">
+    <h2>Planning hebdomadaire conseillé</h2>
+    <p>Lundi : séance 1. Mardi ou mercredi : séance 2. Jeudi : séance 3. Samedi : séance 4. Garde au moins 48 h entre les deux grosses séances jambes si le genou est raide.</p>
+    
+    <section class="session-card">
+      <div class="session-head"><span>Séance 1</span><h2>Bas du corps — Force contrôlée quadriceps/fessiers</h2><p>Objectif : reconstruire la force utile aux freinages, appuis et accélérations.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Exercice</th><th>Séries × reps</th><th>Intensité</th><th>Repos</th></tr></thead><tbody><tr><td><a href="#ex-presse">Presse à cuisses</a></td><td>4 × 8–10</td><td>RPE 7</td><td>2 min</td></tr><tr><td><a href="#ex-smith">Squat guidé à la Smith Machine</a></td><td>3 × 8</td><td>RPE 6–7</td><td>2 min</td></tr><tr><td><a href="#ex-legext">Leg extension</a></td><td>3 × 10–12</td><td>RPE 6–7</td><td>75 s</td></tr><tr><td><a href="#ex-hipthrust">Hip thrust machine</a></td><td>4 × 8–10</td><td>RPE 7</td><td>90 s</td></tr><tr><td><a href="#ex-abduction">Abducteurs assis</a></td><td>3 × 15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-mollets">Mollets assis ou machine à mollets</a></td><td>4 × 12–15</td><td>RPE 7</td><td>60 s</td></tr></tbody></table></div>
+      <p class="note">Échauffement conseillé : 8–10 min vélo/elliptique + 2 séries légères du premier exercice. Finir par 8–12 min vélo facile si le genou est calme.</p>
+    </section>
+    
+    <section class="session-card">
+      <div class="session-head"><span>Séance 2</span><h2>Pectoraux + abdos + cardio doux</h2><p>Objectif : développer les pectoraux sans fatiguer excessivement le genou.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Exercice</th><th>Séries × reps</th><th>Intensité</th><th>Repos</th></tr></thead><tbody><tr><td><a href="#ex-chestpress">Chest press machine</a></td><td>4 × 8–10</td><td>RPE 7</td><td>90 s</td></tr><tr><td><a href="#ex-pecdeck">Pec deck</a></td><td>3 × 12–15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-cablecrunch">Crunch à la poulie haute</a></td><td>4 × 12–15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-pallof">Pallof press</a></td><td>3 × 10–12/côté</td><td>RPE 6</td><td>45 s</td></tr></tbody></table></div>
+      <p class="note">Échauffement conseillé : 8–10 min vélo/elliptique + 2 séries légères du premier exercice. Finir par 8–12 min vélo facile si le genou est calme.</p>
+    </section>
+    
+    <section class="session-card">
+      <div class="session-head"><span>Séance 3</span><h2>Bas du corps — Ischios, fessiers, stabilité hanche</h2><p>Objectif : renforcer la chaîne postérieure et la stabilité latérale, essentielles après LCA.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Exercice</th><th>Séries × reps</th><th>Intensité</th><th>Repos</th></tr></thead><tbody><tr><td><a href="#ex-legcurl">Leg curl assis</a></td><td>4 × 10–12</td><td>RPE 7</td><td>90 s</td></tr><tr><td><a href="#ex-hipthrust">Hip thrust machine</a></td><td>4 × 8–10</td><td>RPE 7</td><td>90 s</td></tr><tr><td><a href="#ex-presse">Presse à cuisses</a></td><td>3 × 10</td><td>RPE 6–7</td><td>90 s</td></tr><tr><td><a href="#ex-abduction">Abducteurs assis</a></td><td>4 × 12–15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-mollets">Mollets assis ou machine à mollets</a></td><td>4 × 12–15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-pallof">Pallof press</a></td><td>3 × 12/côté</td><td>RPE 6</td><td>45 s</td></tr></tbody></table></div>
+      <p class="note">Échauffement conseillé : 8–10 min vélo/elliptique + 2 séries légères du premier exercice. Finir par 8–12 min vélo facile si le genou est calme.</p>
+    </section>
+    
+    <section class="session-card">
+      <div class="session-head"><span>Séance 4</span><h2>Préparation football — Force vitesse contrôlée</h2><p>Objectif : préparer la reprise terrain en gardant un environnement stable et progressif.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Exercice</th><th>Séries × reps</th><th>Intensité</th><th>Repos</th></tr></thead><tbody><tr><td><a href="#ex-smith">Squat guidé à la Smith Machine</a></td><td>3 × 6</td><td>RPE 6, montée dynamique</td><td>2 min</td></tr><tr><td><a href="#ex-presse">Presse à cuisses</a></td><td>4 × 8</td><td>RPE 6, poussée rapide contrôlée</td><td>90 s</td></tr><tr><td><a href="#ex-legcurl">Leg curl assis</a></td><td>3 × 8–10</td><td>RPE 7</td><td>90 s</td></tr><tr><td><a href="#ex-legext">Leg extension</a></td><td>2 × 12/jambe</td><td>RPE 6</td><td>60 s</td></tr><tr><td><a href="#ex-cablecrunch">Crunch à la poulie haute</a></td><td>3 × 12–15</td><td>RPE 7</td><td>60 s</td></tr><tr><td><a href="#ex-pallof">Pallof press</a></td><td>3 × 10/côté</td><td>RPE 6</td><td>45 s</td></tr></tbody></table></div>
+      <p class="note">Échauffement conseillé : 8–10 min vélo/elliptique + 2 séries légères du premier exercice. Finir par 8–12 min vélo facile si le genou est calme.</p>
+    </section>
+    
+  </section>
+  <section id="videos">
+    <h2>Bibliothèque vidéos — chaque exercice du programme</h2>
+    <p>Les vidéos sont intégrées directement dans la page. Si un lecteur ne s’affiche pas, utilise le lien “Ouvrir la vidéo sur YouTube”.</p>
+    <div class="toolbar"><input id="search" type="search" placeholder="Filtrer : presse, pectoraux, abdos, ischios, machine…" /></div>
+    <div class="exercise-grid" id="exerciseGrid">
+    <article class="exercise-card" id="ex-presse" data-name="presse à cuisses" data-zone="machine guidée — priorité quadriceps/fessiers">
+      <div class="exercise-info">
+        <span class="tag">Machine guidée — priorité quadriceps/fessiers</span>
+        <h3>Presse à cuisses</h3>
+        <ul><li>Dos et bassin collés au dossier.</li><li>Pieds largeur bassin, genoux alignés avec les pointes.</li><li>Descente contrôlée, pas de verrouillage brutal en haut.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=jB4SisGD51s" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/jB4SisGD51s" title="Vidéo : Presse à cuisses" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-smith" data-name="squat guidé à la smith machine" data-zone="smith machine — alternative plus contrôlée au squat libre">
+      <div class="exercise-info">
+        <span class="tag">Smith machine — alternative plus contrôlée au squat libre</span>
+        <h3>Squat guidé à la Smith Machine</h3>
+        <ul><li>Butées de sécurité réglées avant la série.</li><li>Amplitude confortable, genou stable, talons au sol.</li><li>Charge modérée : priorité au contrôle post-LCA.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=P8pLAmgDoLY" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/P8pLAmgDoLY" title="Vidéo : Squat guidé à la Smith Machine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-legext" data-name="leg extension" data-zone="machine quadriceps — travail contrôlé">
+      <div class="exercise-info">
+        <span class="tag">Machine quadriceps — travail contrôlé</span>
+        <h3>Leg extension</h3>
+        <ul><li>Axe du genou aligné avec l’axe de la machine.</li><li>Montée contrôlée, pause courte en haut.</li><li>À faire sans élan et sans douleur antérieure du genou.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=PeDhNdCFoSo" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/PeDhNdCFoSo" title="Vidéo : Leg extension" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-legcurl" data-name="leg curl assis" data-zone="machine ischio-jambiers — protection du genou">
+      <div class="exercise-info">
+        <span class="tag">Machine ischio-jambiers — protection du genou</span>
+        <h3>Leg curl assis</h3>
+        <ul><li>Dos plaqué, coussin cuisse bien réglé.</li><li>Ramener les talons sans décoller le bassin.</li><li>Retour lent pour renforcer les ischios.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=ku8CpHoHe6E" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/ku8CpHoHe6E" title="Vidéo : Leg curl assis" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-hipthrust" data-name="hip thrust machine" data-zone="machine fessiers/ischios si disponible, sinon banc + barre guidée">
+      <div class="exercise-info">
+        <span class="tag">Machine fessiers/ischios si disponible, sinon banc + barre guidée</span>
+        <h3>Hip thrust machine</h3>
+        <ul><li>Pieds à plat, genoux ≈ 90° en haut.</li><li>Rétroversion légère du bassin, abdos engagés.</li><li>Pause 1 seconde en haut, sans cambrer.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=iwnmTA1kF5g" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/iwnmTA1kF5g" title="Vidéo : Hip thrust machine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-abduction" data-name="abducteurs assis" data-zone="machine abducteurs — moyen fessier/stabilité hanche">
+      <div class="exercise-info">
+        <span class="tag">Machine abducteurs — moyen fessier/stabilité hanche</span>
+        <h3>Abducteurs assis</h3>
+        <ul><li>Dos calé, bassin stable.</li><li>Ouvrir lentement, contracter les fessiers en fin d’amplitude.</li><li>Retour contrôlé, ne pas laisser la pile claquer.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=H8y4t2Qdb_E" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/H8y4t2Qdb_E" title="Vidéo : Abducteurs assis" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-mollets" data-name="mollets assis ou machine à mollets" data-zone="machine mollets — appuis/course">
+      <div class="exercise-info">
+        <span class="tag">Machine mollets — appuis/course</span>
+        <h3>Mollets assis ou machine à mollets</h3>
+        <ul><li>Amplitude complète : étirement en bas, contraction en haut.</li><li>Pas de rebond.</li><li>Genoux déverrouillés, tempo contrôlé.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=x0yX5MGWiZs" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/x0yX5MGWiZs" title="Vidéo : Mollets assis ou machine à mollets" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-chestpress" data-name="chest press machine" data-zone="machine pectoraux guidée">
+      <div class="exercise-info">
+        <span class="tag">Machine pectoraux guidée</span>
+        <h3>Chest press machine</h3>
+        <ul><li>Poignées à hauteur milieu/bas des pectoraux.</li><li>Omoplates serrées, épaules basses.</li><li>Pousser sans verrouiller brutalement les coudes.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=JfJBmswMF8Q" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/JfJBmswMF8Q" title="Vidéo : Chest press machine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-pecdeck" data-name="pec deck" data-zone="machine isolation pectoraux">
+      <div class="exercise-info">
+        <span class="tag">Machine isolation pectoraux</span>
+        <h3>Pec deck</h3>
+        <ul><li>Siège réglé pour poignées à hauteur poitrine.</li><li>Coudes légèrement fléchis, mouvement en arc.</li><li>Contrôle de l’étirement, pas de compensation épaules.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=jRQ0cKGdNMs" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/jRQ0cKGdNMs" title="Vidéo : Pec deck" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-cablecrunch" data-name="crunch à la poulie haute" data-zone="poulie haute + corde — abdos">
+      <div class="exercise-info">
+        <span class="tag">Poulie haute + corde — abdos</span>
+        <h3>Crunch à la poulie haute</h3>
+        <ul><li>À genoux, corde près de la tête.</li><li>Enrouler la colonne : côtes vers bassin.</li><li>Ne pas tirer avec les bras ou les hanches.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=VFINAHIeDUQ" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/VFINAHIeDUQ" title="Vidéo : Crunch à la poulie haute" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    
+    <article class="exercise-card" id="ex-pallof" data-name="pallof press" data-zone="poulie réglable ou élastique — anti-rotation">
+      <div class="exercise-info">
+        <span class="tag">Poulie réglable ou élastique — anti-rotation</span>
+        <h3>Pallof press</h3>
+        <ul><li>De profil à la poulie, pieds ancrés.</li><li>Bras tendus devant soi, résister à la rotation.</li><li>Bassin et côtes stables, respiration contrôlée.</li></ul>
+        <a class="video-link" href="https://www.youtube.com/watch?v=Pz95Wgyt9MA" target="_blank" rel="noopener">Ouvrir la vidéo sur YouTube</a>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/Pz95Wgyt9MA" title="Vidéo : Pallof press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </article>
+    </div>
+  </section>
+  <section id="progression">
+    <h2>Progression avant reprise football</h2>
+    <div class="phase">
+      <article><h3>Juillet</h3><p>Force guidée, contrôle unilatéral, cardio doux. Pas de match, pas d’opposition. Rechercher zéro gonflement et zéro boiterie.</p></article>
+      <article><h3>Août</h3><p>Ajouter terrain progressivement : course linéaire, accélérations courtes, freinages contrôlés, conduite de balle, puis changements de direction larges.</p></article>
+      <article><h3>Septembre</h3><p>Reprise foot par étapes : sans contact, exercices collectifs, opposition réduite, match partiel, puis match complet seulement si tests et sensations OK.</p></article>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="container">
+    <p><strong>Sources utilisées pour adapter la page :</strong></p>
+    <ul>
+      <li>L’Appart Fitness — plateau muscu-cardio : https://www.lappartfitness.com/plateau-muscu-cardio</li>
+      <li>Aspetar — critères de retour au sport après reconstruction LCA : https://aspetar.com/journal/viewarticle.aspx?id=569</li>
+      <li>ACSM — principes de musculation adultes : https://www.acsm.org/wp-content/uploads/2026/03/Resistance-Training-Position-Stand-infographic.pdf</li>
+      <li>Vidéos YouTube intégrées : voir les liens sous chaque exercice.</li>
+    </ul>
+  </div>
+</footer>
+<script>
+  const input = document.getElementById('search');
+  const cards = Array.from(document.querySelectorAll('.exercise-card'));
+  input.addEventListener('input', () => {
+    const q = input.value.toLowerCase().trim();
+    cards.forEach(card => {
+      const txt = (card.dataset.name + ' ' + card.dataset.zone + ' ' + card.innerText).toLowerCase();
+      card.style.display = txt.includes(q) ? 'grid' : 'none';
+    });
+  });
+</script>
 </body>
 </html>
