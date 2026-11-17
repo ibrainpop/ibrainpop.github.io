@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>html{color-scheme:light}body{margin:0}</style>
-<title>Les moyennes de Lina</title>
+<title>Mes moyennes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Caveat:wght@600&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
   /* Layout: page quadrillée façon feuille Seyès. Titre et étiquette du collège, anneau de la moyenne générale, une carte par matière, puces pour ajouter les matières du collège. */
   :root {
@@ -33,7 +33,6 @@
     --t5-bg: #ffe3da; --t5-ink: #aa3d26;
     --font-display: "Baloo 2", "Trebuchet MS", sans-serif;
     --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-hand: "Caveat", "Comic Sans MS", cursive;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -66,10 +65,6 @@
   main { max-width: 740px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
   .top { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .school {
-    font-family: var(--font-hand); font-weight: 600; font-size: 1.3rem; line-height: 1.1;
-    background: var(--accent-soft); color: var(--accent-ink); padding: 4px 14px 5px; border-radius: 6px; transform: rotate(-1.5deg);
-  }
   h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 8vw, 2.9rem); line-height: 1.05; margin: 4px 0 0; text-wrap: balance; }
   .intro { margin: 0; color: var(--muted); max-width: 52ch; }
 
@@ -141,6 +136,16 @@
   details.method summary { cursor: pointer; font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--fg); }
   details.method p { margin: 8px 0 0; max-width: 65ch; }
   details.method code { font-family: var(--font-body); font-weight: 700; background: var(--surface-2); padding: 1px 7px; border-radius: 6px; color: var(--fg); }
+  [hidden] { display: none !important; }
+  .modal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(24, 12, 45, .55); }
+  .modal-card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .modal-card h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; line-height: 1.1; margin: 0; }
+  .modal-card p { margin: 0; color: var(--muted); }
+  .modal-card input[type="text"] { font-size: 18px; }
+  .modal-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
+  .modal .primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .modal .primary:hover { background: var(--accent); filter: brightness(1.08); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (prefers-reduced-motion: no-preference) {
     .ring { transition: stroke-dashoffset .5s ease, stroke .3s; }
     button { transition: background .15s, filter .15s, border-color .15s; }
@@ -151,9 +156,9 @@
 
 <main>
   <header class="top">
-    <span class="school">Collège Louis Aragon · Vénissieux</span>
-    <h1>Les moyennes de Lina</h1>
+    <h1 id="title">Mes moyennes</h1>
     <p class="intro">Note chaque contrôle avec son coefficient. Tes moyennes par matière et ta moyenne générale se calculent toutes seules.</p>
+    <button type="button" class="link-btn" id="edit-name">Ajouter mon prénom</button>
   </header>
 
   <section class="hero" aria-live="polite">
@@ -189,6 +194,19 @@
   </details>
 </main>
 
+<div class="modal" id="name-modal" role="dialog" aria-modal="true" aria-labelledby="name-title" hidden>
+  <form class="modal-card" id="name-form" novalidate>
+    <h2 id="name-title">Bienvenue !</h2>
+    <p>Comment t'appelles-tu ? Ton prénom apparaîtra en haut de la page.</p>
+    <label class="sr" for="firstname">Ton prénom</label>
+    <input type="text" id="firstname" maxlength="24" autocomplete="given-name" placeholder="Ton prénom">
+    <div class="modal-actions">
+      <button type="button" class="link-btn danger" id="name-skip">Passer</button>
+      <button type="submit" class="primary">C'est parti</button>
+    </div>
+  </form>
+</div>
+
 <script>
 (function () {
   var KEY = "moyennes-lina-v1";
@@ -197,7 +215,7 @@
 
   function g(note, sur, coef) { return { note: note, sur: sur, coef: coef }; }
   function blankSubject() { return { name: "", grades: [g("", "20", "1")] }; }
-  function blankState() { return { updatedAt: 0, subjects: [blankSubject()] }; }
+  function blankState(prev) { return { updatedAt: 0, name: prev ? prev.name || "" : "", nameAsked: prev ? !!prev.nameAsked : false, subjects: [blankSubject()] }; }
 
   var state = loadLocal() || blankState();
   var armed = null, armTimer = null;
@@ -245,7 +263,8 @@
         var d = snap && snap.exists ? snap.data() : null;
         var rs = d && d.state;
         if (rs && Array.isArray(rs.subjects) && rs.subjects.length && (rs.updatedAt || 0) > (state.updatedAt || 0)) {
-          state = rs; saveLocal(); render();
+          state = rs; saveLocal(); render(); renderHeader();
+          if (state.name || state.nameAsked) closeModal();
         } else if ((state.updatedAt || 0) > ((rs && rs.updatedAt) || 0)) {
           flush();
         }
@@ -274,6 +293,41 @@
     });
     return { avg: sumW > 0 ? sumP / sumW : null, sumP: sumP, sumW: sumW, count: count };
   }
+
+  var titleEl = document.getElementById("title");
+  var editBtn = document.getElementById("edit-name");
+  var modal = document.getElementById("name-modal");
+  var nameInput = document.getElementById("firstname");
+  var nameSkip = document.getElementById("name-skip");
+
+  function renderHeader() {
+    var n = state.name ? String(state.name) : "";
+    titleEl.textContent = n ? "Les moyennes de " + n : "Mes moyennes";
+    document.title = titleEl.textContent;
+    editBtn.textContent = n ? "Changer de prénom" : "Ajouter mon prénom";
+    update();
+  }
+  function openModal() {
+    nameInput.value = state.name || "";
+    nameInput.classList.remove("invalid");
+    nameSkip.textContent = state.name ? "Annuler" : "Passer";
+    modal.hidden = false;
+    setTimeout(function () { nameInput.focus(); nameInput.select(); }, 30);
+  }
+  function closeModal() { modal.hidden = true; }
+  function submitName() {
+    var v = nameInput.value.replace(/\s+/g, " ").trim();
+    if (!v) { nameInput.classList.add("invalid"); nameInput.focus(); return; }
+    state.name = v.slice(0, 24); state.nameAsked = true;
+    touch(); closeModal(); renderHeader();
+  }
+  document.getElementById("name-form").addEventListener("submit", function (e) { e.preventDefault(); submitName(); });
+  nameSkip.addEventListener("click", function () {
+    if (!state.name && !state.nameAsked) { state.nameAsked = true; touch(); }
+    closeModal(); editBtn.focus();
+  });
+  editBtn.addEventListener("click", openModal);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !modal.hidden) nameSkip.click(); });
 
   var box = document.getElementById("subjects");
   var chipsBox = document.getElementById("chips");
@@ -363,9 +417,10 @@
     renderChips();
   }
   function encourage(a) {
-    if (a >= 16) return "Excellent, Lina ! Ce sont des résultats dont tu peux être fière.";
-    if (a >= 14) return "Très beau travail, Lina !";
-    if (a >= 12) return "Bien joué, Lina. Continue comme ça.";
+    var nm = state.name ? ", " + state.name : "";
+    if (a >= 16) return "Excellent" + nm + " ! Ce sont de très beaux résultats.";
+    if (a >= 14) return "Très beau travail" + nm + " !";
+    if (a >= 12) return "Bien joué" + nm + ". Continue comme ça.";
     if (a >= 10) return "Tu es au-dessus de 10, c'est bien parti.";
     return "Rien n'est joué : chaque nouveau contrôle peut faire remonter ta moyenne.";
   }
@@ -438,11 +493,13 @@
     var b = e.currentTarget;
     if (armed !== "all") { arm("all", b); return; }
     disarm(); resetClear();
-    state = blankState();
+    state = blankState(state);
     touch(); render();
   });
 
   render();
+  renderHeader();
+  if (!state.name && !state.nameAsked) openModal();
   initRemote();
 })();
 </script>
